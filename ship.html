@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACOYA — Ship & Cruise Booking</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .cruise-wrap { max-width: 850px; margin: 3rem auto 0; }
+  .cruise-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; max-width: 1200px; margin: 3rem auto; }
+  .cruise-card {
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 6px; padding: 1.5rem; cursor: pointer;
+    transition: all 0.3s; text-align: center;
+  }
+  .cruise-card:hover, .cruise-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+  .cruise-card.selected { box-shadow: 0 0 0 2px var(--gold); }
+  .cruise-emoji { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .cruise-name { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.3rem; }
+  .cruise-route { font-size: 0.75rem; color: var(--gold); letter-spacing: 1px; margin-bottom: 0.5rem; }
+  .cruise-dur { font-size: 0.75rem; color: var(--text-light); }
+  .cruise-price { font-family:'Cormorant Garamond',serif; font-size: 1.3rem; color: var(--gold); margin-top: 0.8rem; }
+  .section-sub { max-width: 1200px; margin: 0 auto; }
+  @media(max-width:768px){ .cruise-cards { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width:480px){ .cruise-cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-tag">Book</div>
+    <h1 class="page-title">Ship & Cruise <em>Booking</em></h1>
+    <p class="page-desc">From Lakshadweep island-hopping to luxury Mediterranean cruises — sail the world with ACOYA.</p>
+  </div>
+</div>
+
+<section style="background:var(--navy);">
+  <div class="section-sub">
+    <div class="section-tag">Select Route</div>
+    <h2 class="section-title">Choose Your <em>Cruise</em></h2>
+  </div>
+
+  <div class="cruise-cards">
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Kochi — Lakshadweep — Kochi')">
+      <div class="cruise-emoji">🏝️</div>
+      <div class="cruise-name">Lakshadweep Cruise</div>
+      <div class="cruise-route">Kochi → Lakshadweep → Kochi</div>
+      <div class="cruise-dur">⏱ 5 Nights / 6 Days</div>
+      <div class="cruise-price">₹35,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
+    </div>
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Kerala — Maldives Cruise')">
+      <div class="cruise-emoji">🌊</div>
+      <div class="cruise-name">Kerala–Maldives Cruise</div>
+      <div class="cruise-route">Kochi → Maldives → Kochi</div>
+      <div class="cruise-dur">⏱ 7 Nights / 8 Days</div>
+      <div class="cruise-price">₹75,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
+    </div>
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Mumbai — Goa Cruise')">
+      <div class="cruise-emoji">⚓</div>
+      <div class="cruise-name">Mumbai–Goa Cruise</div>
+      <div class="cruise-route">Mumbai → Goa → Mumbai</div>
+      <div class="cruise-dur">⏱ 2 Nights / 3 Days</div>
+      <div class="cruise-price">₹18,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
+    </div>
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Mediterranean Cruise')">
+      <div class="cruise-emoji">🏛️</div>
+      <div class="cruise-name">Mediterranean Cruise</div>
+      <div class="cruise-route">Italy • Greece • Spain • France</div>
+      <div class="cruise-dur">⏱ 10 Nights / 11 Days</div>
+      <div class="cruise-price">₹2,20,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
+    </div>
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Caribbean Cruise')">
+      <div class="cruise-emoji">🌴</div>
+      <div class="cruise-name">Caribbean Cruise</div>
+      <div class="cruise-route">Bahamas • Jamaica • Barbados</div>
+      <div class="cruise-dur">⏱ 8 Nights / 9 Days</div>
+      <div class="cruise-price">₹1,80,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
+    </div>
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Custom Route')">
+      <div class="cruise-emoji">🗺️</div>
+      <div class="cruise-name">Custom Route</div>
+      <div class="cruise-route">Your choice of destination</div>
+      <div class="cruise-dur">⏱ As per requirement</div>
+      <div class="cruise-price" style="font-size:1rem;">Contact for pricing</div>
+    </div>
+  </div>
+
+  <div class="cruise-wrap">
+    <div class="section-tag">Booking Details</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white);margin-bottom:2rem;">Complete Your <em style="color:var(--gold);">Booking</em></h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Passenger name">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>No. of Passengers</label>
+        <input type="number" placeholder="2" min="1">
+      </div>
+      <div class="form-group full">
+        <label>Selected Cruise / Route</label>
+        <input type="text" id="selected-cruise" placeholder="Select a cruise above or type here" readonly style="cursor:pointer;">
+      </div>
+      <div class="form-group">
+        <label>Travel Date</label>
+        <input type="date">
+      </div>
+      <div class="form-group">
+        <label>Cabin Type</label>
+        <select>
+          <option>Interior Cabin</option>
+          <option>Ocean View Cabin</option>
+          <option>Balcony Cabin</option>
+          <option>Junior Suite</option>
+          <option>Luxury Suite</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Special Requirements</label>
+        <textarea placeholder="Dietary needs, accessibility, anniversary/honeymoon setup, cabin preferences..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="handleSubmit(this,'Cruise Booking Sent!')">🚢 Send Cruise Booking Request</button>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  renderNav('Cruises');
+  renderFooter();
+  initReveal();
+
+  function selectCruise(card, name) {
+    document.querySelectorAll('.cruise-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    document.getElementById('selected-cruise').value = name;
+  }
+</script>
+<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACOYA — Flight Booking</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .flight-wrap { max-width: 850px; margin: 3rem auto 0; }
+  .type-toggle { display: flex; gap: 0; margin-bottom: 2.5rem; border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; overflow: hidden; width: fit-content; }
+  .type-btn {
+    padding: 0.7rem 1.8rem; background: none; border: none;
+    color: var(--text-light); font-family:'Outfit',sans-serif;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .type-btn.active { background: var(--gold); color: var(--navy); font-weight: 600; }
+  .info-boxes { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; max-width: 850px; margin: 4rem auto 0; }
+  .info-box { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.1); border-radius: 6px; padding: 1.5rem; text-align: center; }
+  .info-box-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .info-box-title { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .info-box-desc { font-size: 0.8rem; color: var(--text-light); line-height: 1.5; }
+  @media(max-width:600px){ .info-boxes { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-tag">Book</div>
+    <h1 class="page-title">Flight <em>Booking</em></h1>
+    <p class="page-desc">Domestic and international flights at the best prices. Fill in your details and our team will confirm within 24 hours.</p>
+  </div>
+</div>
+
+<section style="background:var(--navy);">
+  <div class="flight-wrap">
+    <div class="type-toggle">
+      <button class="type-btn active" onclick="setType(this,'One Way')">One Way</button>
+      <button class="type-btn" onclick="setType(this,'Round Trip')">Round Trip</button>
+      <button class="type-btn" onclick="setType(this,'Multi City')">Multi City</button>
+    </div>
+    <input type="hidden" id="trip-type" value="One Way">
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Passenger name" id="f-name">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+91 XXXXX XXXXX" id="f-phone">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="your@email.com" id="f-email">
+      </div>
+      <div class="form-group">
+        <label>No. of Passengers</label>
+        <input type="number" placeholder="1" min="1" id="f-pax">
+      </div>
+      <div class="form-group">
+        <label>From (City / Airport)</label>
+        <input type="text" placeholder="e.g. Kochi (COK)" id="f-from">
+      </div>
+      <div class="form-group">
+        <label>To (City / Airport)</label>
+        <input type="text" placeholder="e.g. Agatti (AGX)" id="f-to">
+      </div>
+      <div class="form-group">
+        <label>Departure Date</label>
+        <input type="date" id="f-dep">
+      </div>
+      <div class="form-group" id="return-field">
+        <label>Return Date</label>
+        <input type="date" id="f-ret">
+      </div>
+      <div class="form-group">
+        <label>Travel Class</label>
+        <select id="f-class">
+          <option>Economy</option>
+          <option>Premium Economy</option>
+          <option>Business Class</option>
+          <option>First Class</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preferred Airline</label>
+        <select>
+          <option value="">No preference</option>
+          <option>IndiGo</option>
+          <option>Air India</option>
+          <option>SpiceJet</option>
+          <option>Emirates</option>
+          <option>Air Arabia</option>
+          <option>Etihad Airways</option>
+          <option>Qatar Airways</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Special Requirements</label>
+        <textarea placeholder="Meal preference, wheelchair, extra baggage, infant seat..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="handleSubmit(this,'Flight Request Sent!')">✈️ Send Flight Booking Request</button>
+    </div>
+  </div>
+
+  <div class="info-boxes">
+    <div class="info-box reveal">
+      <div class="info-box-icon">🕐</div>
+      <div class="info-box-title">24/7 Support</div>
+      <div class="info-box-desc">Our team is available round the clock to help with your flight bookings.</div>
+    </div>
+    <div class="info-box reveal">
+      <div class="info-box-icon">💰</div>
+      <div class="info-box-title">Best Price</div>
+      <div class="info-box-desc">We search across all airlines to get you the best deal possible.</div>
+    </div>
+    <div class="info-box reveal">
+      <div class="info-box-icon">📋</div>
+      <div class="info-box-title">Easy Process</div>
+      <div class="info-box-desc">Submit details, we'll confirm availability and pricing within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  renderNav('Flights');
+  renderFooter();
+  initReveal();
+
+  function setType(btn, type) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('trip-type').value = type;
+    document.getElementById('return-field').style.opacity = type === 'One Way' ? '0.4' : '1';
+  }
+</script>
+<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
+</body>
+</html>

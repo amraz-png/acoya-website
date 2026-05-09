@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACOYA — Gallery</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .filter-bar { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .filter-btn {
+    padding: 0.5rem 1.4rem; background: none;
+    border: 1px solid rgba(201,168,76,0.25); color: var(--text-light);
+    border-radius: 30px; font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; transition: all 0.3s; font-family:'Outfit',sans-serif;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 600; }
+  .gallery-masonry { columns: 3; gap: 1.2rem; max-width: 1200px; margin: 0 auto; }
+  .gallery-item {
+    break-inside: avoid; margin-bottom: 1.2rem;
+    border-radius: 6px; overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.1);
+    cursor: pointer; position: relative;
+    background: var(--navy-mid); transition: all 0.4s;
+  }
+  .gallery-item:hover { border-color: var(--gold); transform: scale(1.02); z-index: 2; }
+  .gallery-thumb {
+    width: 100%; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    color: white; font-size: 4rem; position: relative;
+  }
+  .gallery-thumb.tall { height: 280px; }
+  .gallery-thumb.short { height: 180px; }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,22,40,0.9) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-label { font-size: 0.9rem; color: var(--white); font-weight: 600; }
+  .gallery-cat { font-size: 0.72rem; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+  @media(max-width:900px){ .gallery-masonry { columns: 2; } }
+  @media(max-width:500px){ .gallery-masonry { columns: 1; } }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-tag">Visual Journey</div>
+    <h1 class="page-title">Through Our <em>Lens</em></h1>
+    <p class="page-desc">Moments captured across the world's most beautiful destinations — from Lakshadweep to Switzerland.</p>
+  </div>
+</div>
+
+<section style="background:var(--navy);">
+  <div style="max-width:1200px;margin:0 auto 2rem;">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterGallery(this,'all')">All</button>
+      <button class="filter-btn" onclick="filterGallery(this,'lakshadweep')">Lakshadweep</button>
+      <button class="filter-btn" onclick="filterGallery(this,'international')">International</button>
+      <button class="filter-btn" onclick="filterGallery(this,'cruise')">Cruises</button>
+      <button class="filter-btn" onclick="filterGallery(this,'kerala')">Kerala</button>
+    </div>
+  </div>
+
+  <div class="gallery-masonry" id="gallery-grid">
+    <div class="gallery-item" data-cat="lakshadweep">
+      <div class="gallery-thumb tall">🏝️
+        <div class="gallery-overlay"><div class="gallery-label">Agatti Lagoon</div><div class="gallery-cat">Lakshadweep</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="international">
+      <div class="gallery-thumb short">🏔️
+        <div class="gallery-overlay"><div class="gallery-label">Swiss Alps Sunrise</div><div class="gallery-cat">Switzerland</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="cruise">
+      <div class="gallery-thumb tall">🚢
+        <div class="gallery-overlay"><div class="gallery-label">Sunset on the Sea</div><div class="gallery-cat">Cruise</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="lakshadweep">
+      <div class="gallery-thumb short">🪸
+        <div class="gallery-overlay"><div class="gallery-label">Coral Reef Snorkeling</div><div class="gallery-cat">Lakshadweep</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="international">
+      <div class="gallery-thumb tall">🕌
+        <div class="gallery-overlay"><div class="gallery-label">Dubai Skyline Night</div><div class="gallery-cat">Dubai</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="kerala">
+      <div class="gallery-thumb short">🌴
+        <div class="gallery-overlay"><div class="gallery-label">Kerala Backwaters</div><div class="gallery-cat">Kerala</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="lakshadweep">
+      <div class="gallery-thumb short">🌅
+        <div class="gallery-overlay"><div class="gallery-label">Kavaratti Sunset</div><div class="gallery-cat">Lakshadweep</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="international">
+      <div class="gallery-thumb tall">⛩️
+        <div class="gallery-overlay"><div class="gallery-label">Kyoto Temple</div><div class="gallery-cat">Japan</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="cruise">
+      <div class="gallery-thumb short">🌊
+        <div class="gallery-overlay"><div class="gallery-label">Ocean Horizon</div><div class="gallery-cat">Cruise</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="lakshadweep">
+      <div class="gallery-thumb tall">🐠
+        <div class="gallery-overlay"><div class="gallery-label">Bangaram Diving</div><div class="gallery-cat">Lakshadweep</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="kerala">
+      <div class="gallery-thumb short">🍃
+        <div class="gallery-overlay"><div class="gallery-label">Munnar Tea Gardens</div><div class="gallery-cat">Kerala</div></div>
+      </div>
+    </div>
+    <div class="gallery-item" data-cat="international">
+      <div class="gallery-thumb short">🏛️
+        <div class="gallery-overlay"><div class="gallery-label">Rome Colosseum</div><div class="gallery-cat">Europe</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  renderNav('Gallery');
+  renderFooter();
+
+  function filterGallery(btn, cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const show = cat === 'all' || item.dataset.cat === cat;
+      item.style.display = show ? 'block' : 'none';
+    });
+  }
+</script>
+<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
+</body>
+</html>

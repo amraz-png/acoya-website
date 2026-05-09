@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACOYA Tours & Travels — Home</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* HERO */
+  #home {
+    height: 100vh; position: relative;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.09) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,52,96,0.5) 0%, transparent 50%),
+      linear-gradient(135deg, #0A1628 0%, #112240 60%, #0D1F3C 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content {
+    position: relative; z-index: 2; text-align: center; padding: 0 5%;
+    animation: fadeUp 1.2s ease forwards;
+  }
+  .hero-tagline {
+    font-size: 0.78rem; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-tagline::before, .hero-tagline::after { content: ''; width: 40px; height: 1px; background: var(--gold); }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 300; line-height: 1.05; color: var(--white); margin-bottom: 0.5rem;
+  }
+  .hero-title em { color: var(--gold); font-style: italic; }
+  .hero-sub {
+    font-size: 1rem; color: var(--text-light);
+    max-width: 520px; margin: 1.5rem auto 2.5rem; line-height: 1.8; font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .hero-stats {
+    position: absolute; bottom: 3rem; left: 5%;
+    display: flex; gap: 3rem; animation: fadeUp 1.5s ease 0.3s both;
+  }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--gold); }
+  .stat-label { font-size: 0.72rem; color: var(--text-light); letter-spacing: 1px; text-transform: uppercase; }
+  .scroll-hint {
+    position: absolute; bottom: 3rem; right: 5%;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--text-light); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--gold), transparent); animation: pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* WHY US */
+  .why-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0; }
+  .why-card {
+    padding: 2rem 1.5rem; background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.12); border-radius: 6px;
+    transition: border-color 0.3s, transform 0.3s; text-align: center;
+  }
+  .why-card:hover { border-color: var(--gold); transform: translateY(-6px); }
+  .why-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .why-title { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+  .why-desc { font-size: 0.83rem; color: var(--text-light); line-height: 1.6; }
+
+  /* FEATURED PACKAGES PREVIEW */
+  .featured-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0; }
+  .feat-pkg {
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 6px; overflow: hidden; transition: all 0.4s; cursor: pointer;
+  }
+  .feat-pkg:hover { transform: translateY(-8px); border-color: var(--gold); }
+  .feat-img {
+    height: 160px; background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    display: flex; align-items: center; justify-content: center; font-size: 4.5rem;
+    position: relative;
+  }
+  .feat-badge {
+    position: absolute; top: 0.8rem; right: 0.8rem;
+    background: var(--gold); color: var(--navy);
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+    padding: 0.25rem 0.7rem; border-radius: 2px; text-transform: uppercase;
+  }
+  .feat-body { padding: 1.3rem; }
+  .feat-loc { font-size: 0.7rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .feat-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--white); margin-bottom: 0.4rem; }
+  .feat-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+  .feat-price { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--gold); }
+  .feat-price span { font-size: 0.75rem; color: var(--text-light); font-family: 'Outfit',sans-serif; }
+  .view-all-wrap { text-align: center; margin-top: 3rem; }
+
+  /* TESTIMONIALS STRIP */
+  .testi-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0; }
+  .testi-card {
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 6px; padding: 1.8rem; transition: border-color 0.3s;
+  }
+  .testi-card:hover { border-color: rgba(201,168,76,0.35); }
+  .testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; }
+  .testi-text { font-family: 'Cormorant Garamond',serif; font-size: 1.05rem; font-weight: 300; font-style: italic; color: var(--cream); line-height: 1.7; margin-bottom: 1.2rem; }
+  .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+  .testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+  .testi-name { font-size: 0.88rem; font-weight: 600; color: var(--white); }
+  .testi-place { font-size: 0.75rem; color: var(--gold); }
+
+  @media(max-width:1024px){
+    .why-grid { grid-template-columns: repeat(2,1fr); }
+    .featured-grid, .testi-strip { grid-template-columns: repeat(2,1fr); }
+  }
+  @media(max-width:600px){
+    .why-grid, .featured-grid, .testi-strip { grid-template-columns: 1fr; }
+    .hero-stats { position: static; flex-wrap: wrap; justify-content: center; margin-top: 2rem; }
+    .scroll-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tagline">Lakshadweep's Premier Travel Partner</div>
+    <h1 class="hero-title">
+      Discover the<br>
+      <em>World's Finest</em><br>
+      Destinations
+    </h1>
+    <p class="hero-sub">From the pristine islands of Lakshadweep to the snow-capped peaks of Switzerland — ACOYA crafts journeys that stay with you forever.</p>
+    <div class="hero-btns">
+      <a href="packages.html" class="btn-primary">Explore Packages</a>
+      <a href="contact.html" class="btn-outline">Book a Trip</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-num">5K+</div><div class="stat-label">Happy Travelers</div></div>
+    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Destinations</div></div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+</section>
+
+<!-- WHY US -->
+<section style="background:var(--navy-mid);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Why Choose Us</div>
+    <h2 class="section-title">Travel with <em>Confidence</em></h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">🏝️</div>
+      <div class="why-title">Island Experts</div>
+      <div class="why-desc">Based in Agatti, Lakshadweep — we know these islands like no one else.</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">✈️</div>
+      <div class="why-title">All-in-One</div>
+      <div class="why-desc">Flights, cruises, hotels, and tours — everything under one roof.</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">🕐</div>
+      <div class="why-title">24/7 Support</div>
+      <div class="why-desc">Our team is always available, every day, any time you need us.</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">💎</div>
+      <div class="why-title">Best Value</div>
+      <div class="why-desc">Premium experiences at competitive prices with no hidden charges.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PACKAGES -->
+<section style="background:var(--navy);">
+  <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
+    <div>
+      <div class="section-tag">Top Picks</div>
+      <h2 class="section-title">Featured <em>Packages</em></h2>
+    </div>
+    <a href="packages.html" class="btn-outline">View All</a>
+  </div>
+  <div class="featured-grid">
+    <div class="feat-pkg reveal" onclick="location.href='packages.html'">
+      <div class="feat-img">🏝️<div class="feat-badge">Top Pick</div></div>
+      <div class="feat-body">
+        <div class="feat-loc">📍 Lakshadweep</div>
+        <div class="feat-name">Agatti Island Paradise</div>
+        <div class="feat-foot">
+          <div class="feat-price">₹22,000 <span>/ person</span></div>
+          <span style="font-size:0.78rem;color:var(--text-light);">3N / 4D</span>
+        </div>
+      </div>
+    </div>
+    <div class="feat-pkg reveal" onclick="location.href='packages.html'">
+      <div class="feat-img">🏝️<div class="feat-badge">Popular</div></div>
+      <div class="feat-body">
+        <div class="feat-loc">📍 Maldives</div>
+        <div class="feat-name">Maldives Serenity</div>
+        <div class="feat-foot">
+          <div class="feat-price">₹85,000 <span>/ person</span></div>
+          <span style="font-size:0.78rem;color:var(--text-light);">6N / 7D</span>
+        </div>
+      </div>
+    </div>
+    <div class="feat-pkg reveal" onclick="location.href='packages.html'">
+      <div class="feat-img">🕌<div class="feat-badge">Trending</div></div>
+      <div class="feat-body">
+        <div class="feat-loc">📍 Dubai</div>
+        <div class="feat-name">Dubai Luxury</div>
+        <div class="feat-foot">
+          <div class="feat-price">₹55,000 <span>/ person</span></div>
+          <span style="font-size:0.78rem;color:var(--text-light);">4N / 5D</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="view-all-wrap"><a href="packages.html" class="btn-primary">View All Packages</a></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background:var(--navy-mid);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Guest Stories</div>
+    <h2 class="section-title">Stories of <em>Joy</em></h2>
+  </div>
+  <div class="testi-strip">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"ACOYA made our Lakshadweep trip absolutely magical. Every detail was perfect — the island, the water, the stay!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div><div class="testi-name">Arjun & Priya Nair</div><div class="testi-place">Agatti Island • 2024</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"The Dubai package was beyond expectations. Smooth bookings, great hotels, and the team was always reachable!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div><div class="testi-name">Rahul Menon</div><div class="testi-place">Dubai Package • 2024</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Our family cruise was breathtaking. ACOYA's team handled everything effortlessly. Will definitely book again!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div><div class="testi-name">Sunitha Thomas</div><div class="testi-place">Cruise Package • 2023</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  renderNav('Home');
+  renderFooter();
+  initReveal();
+</script>
+<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACOYA — Contact Us</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; max-width: 1200px; margin: 3rem auto 0; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+  .contact-card {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    padding: 1.5rem; background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.12); border-radius: 6px;
+    transition: border-color 0.3s;
+  }
+  .contact-card:hover { border-color: rgba(201,168,76,0.4); }
+  .contact-icon {
+    width: 48px; height: 48px; flex-shrink: 0;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+  }
+  .contact-label { font-size: 0.72rem; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 500; }
+  .contact-val { font-size: 0.92rem; color: var(--cream); line-height: 1.7; }
+  .contact-val a { color: var(--cream); text-decoration: none; transition: color 0.3s; }
+  .contact-val a:hover { color: var(--gold); }
+  .hours-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(46,125,50,0.15); border: 1px solid rgba(46,125,50,0.3);
+    color: #81C784; font-size: 0.75rem; font-weight: 600;
+    padding: 0.3rem 0.8rem; border-radius: 30px; margin-top: 0.5rem; letter-spacing: 0.5px;
+  }
+  .hours-badge::before { content: '●'; font-size: 0.55rem; animation: blink 1.5s ease infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .form-card { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 2.5rem; }
+  .form-title { font-family:'Cormorant Garamond',serif; font-size: 1.8rem; color: var(--white); margin-bottom: 0.5rem; }
+  .form-title em { color: var(--gold); font-style: italic; }
+  .form-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.6; }
+
+  /* PKG highlight */
+  .pkg-highlight {
+    display: none; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 4px; padding: 0.8rem 1.2rem; margin-bottom: 1.5rem;
+    font-size: 0.85rem; color: var(--gold);
+  }
+  .pkg-highlight.visible { display: flex; align-items: center; gap: 0.8rem; }
+
+  @media(max-width:900px){ .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-tag">Reach Us</div>
+    <h1 class="page-title">Let's Plan <em>Together</em></h1>
+    <p class="page-desc">Our travel experts are ready 24/7 to help you plan the journey of a lifetime. Get in touch today.</p>
+  </div>
+</div>
+
+<section style="background:var(--navy);">
+  <div class="contact-grid">
+    <!-- CONTACT INFO -->
+    <div class="contact-info">
+      <div class="contact-card reveal">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Office Address</div>
+          <div class="contact-val">
+            904/15 ACOYA Tours & Travels LLP<br>
+            Agatti Island, Lakshadweep<br>
+            Union Territory, India
+          </div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Phone Numbers</div>
+          <div class="contact-val">
+            <a href="tel:+919495768129">+91 94957 68129</a><br>
+            <a href="tel:+919995588169">+91 99955 88169</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Email Address</div>
+          <div class="contact-val">
+            <a href="mailto:acoya.travel@gmail.com">acoya.travel@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-label">Working Hours</div>
+          <div class="contact-val">Every day — All day</div>
+          <div class="hours-badge">Open 24 / 7</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card reveal">
+      <div class="form-title">Send Us a <em>Message</em></div>
+      <div class="form-sub">Fill in the form and we'll get back to you within a few hours.</div>
+
+      <div class="pkg-highlight" id="pkg-highlight">
+        <span>📦</span>
+        <span id="pkg-highlight-text">Enquiring about a package</span>
+        <button onclick="clearPkg()" style="margin-left:auto;background:none;border:none;color:var(--gold);cursor:pointer;font-size:1rem;">✕</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="form-group full">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group full">
+          <label>I'm Interested In</label>
+          <select id="interest-select">
+            <option value="">Select a service</option>
+            <option>Lakshadweep Tour Package</option>
+            <option>International Tour Package</option>
+            <option>Flight Booking</option>
+            <option>Ship / Cruise Booking</option>
+            <option>Custom Tour Planning</option>
+            <option>Honeymoon Package</option>
+            <option>Group Tour</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Travel Date</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>No. of Travelers</label>
+          <input type="number" placeholder="2" min="1">
+        </div>
+        <div class="form-group full">
+          <label>Your Message</label>
+          <textarea placeholder="Tell us about your travel plans, preferences, budget..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="handleSubmit(this,'Message Sent!')">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  renderNav('Contact');
+  renderFooter();
+  initReveal();
+
+  // Pre-fill package if redirected from packages page
+  window.addEventListener('load', () => {
+    const params = new URLSearchParams(window.location.search);
+    const pkg = params.get('pkg');
+    if (pkg) {
+      const el = document.getElementById('pkg-highlight');
+      document.getElementById('pkg-highlight-text').textContent = '📦 Enquiring about: ' + pkg;
+      el.classList.add('visible');
+      const sel = document.getElementById('interest-select');
+      if (pkg.includes('Island') || pkg.includes('Lakshadweep')) {
+        sel.value = 'Lakshadweep Tour Package';
+      } else {
+        sel.value = 'International Tour Package';
+      }
+    }
+  });
+
+  function clearPkg() {
+    document.getElementById('pkg-highlight').classList.remove('visible');
+    history.replaceState({}, '', 'contact.html');
+  }
+</script>
+<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
+</body>
+</html>
