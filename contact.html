@@ -118,15 +118,15 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" placeholder="Your name">
+          <input type="text" id="c-name" placeholder="Your name">
         </div>
         <div class="form-group">
           <label>Phone</label>
-          <input type="tel" placeholder="+91 XXXXX XXXXX">
+          <input type="tel" id="c-phone" placeholder="+91 XXXXX XXXXX">
         </div>
         <div class="form-group full">
           <label>Email</label>
-          <input type="email" placeholder="your@email.com">
+          <input type="email" id="c-email" placeholder="your@email.com">
         </div>
         <div class="form-group full">
           <label>I'm Interested In</label>
@@ -152,7 +152,7 @@
         </div>
         <div class="form-group full">
           <label>Your Message</label>
-          <textarea placeholder="Tell us about your travel plans, preferences, budget..."></textarea>
+          <textarea id="c-message" placeholder="Tell us about your travel plans, preferences, budget..."></textarea>
         </div>
         <button class="submit-btn" onclick="handleSubmit(this,'Message Sent!')">Send Message</button>
       </div>
@@ -161,7 +161,19 @@
 </section>
 
 <div id="footer-placeholder"></div>
-<script src="shared.js"></script>
+<script src="shared.js">
+function validateAndSubmit(btn) {
+  var ids = ['c-name','c-phone','c-email','c-message'];
+  var empty = [];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    else if(el) el.style.borderColor='';
+  });
+  var sel = document.getElementById('interest-select');
+  if(empty.length > 0) { alert('Please fill all required fields!'); return; }
+  handleSubmit(btn, 'Message Sent!');
+}
+</script>
 <script>
   renderNav('Contact');
   renderFooter();
