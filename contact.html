@@ -38,6 +38,25 @@
   .form-title em { color: var(--gold); font-style: italic; }
   .form-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.6; }
 
+  /* Social row */
+  .social-row {
+    display: flex; gap: 0.8rem; margin-top: 1rem;
+  }
+  .social-btn {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 50%;
+    color: var(--gold); text-decoration: none;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+  }
+  .social-btn:hover {
+    background: var(--gold); color: var(--navy);
+    transform: translateY(-2px);
+  }
+
   /* PKG highlight */
   .pkg-highlight {
     display: none; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
@@ -102,6 +121,17 @@
           <div class="hours-badge">Open 24 / 7</div>
         </div>
       </div>
+      <!-- SOCIAL ICONS -->
+      <div class="contact-card reveal">
+        <div class="contact-icon">🌐</div>
+        <div style="flex:1;">
+          <div class="contact-label">Follow Us</div>
+          <div class="social-row">
+            <a href="https://www.instagram.com/acoya.tours_travels" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">📷</a>
+            <a href="https://wa.me/919495768129" target="_blank" rel="noopener" class="social-btn" aria-label="WhatsApp">💬</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- FORM -->
@@ -144,11 +174,11 @@
         </div>
         <div class="form-group">
           <label>Travel Date</label>
-          <input type="date">
+          <input type="date" id="c-date">
         </div>
         <div class="form-group">
           <label>No. of Travelers</label>
-          <input type="number" placeholder="2" min="1">
+          <input type="number" id="c-travelers" placeholder="2" min="1">
         </div>
         <div class="form-group full">
           <label>Your Message</label>
@@ -161,33 +191,87 @@
 </section>
 
 <div id="footer-placeholder"></div>
-<script src="shared.js">
-function validateAndSubmit(btn) {
-  var ids = ['c-name','c-phone','c-email','c-message'];
-  var empty = [];
-  ids.forEach(function(id) {
-    var el = document.getElementById(id);
-    else if(el) el.style.borderColor='';
-  });
-  var sel = document.getElementById('interest-select');
-  if(empty.length > 0) { alert('Please fill all required fields!'); return; }
-  handleSubmit(btn, 'Message Sent!');
-}
-</script>
+
+<script src="shared.js"></script>
 <script>
+  function validateAndSubmit(btn) {
+    var ids = ['c-name', 'c-phone', 'c-email', 'c-message'];
+    var empty = [];
+    ids.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && !el.value.trim()) {
+        empty.push(id);
+        el.style.borderColor = '#e74c3c';
+      } else if (el) {
+        el.style.borderColor = '';
+      }
+    });
+
+    var sel = document.getElementById('interest-select');
+    if (sel && !sel.value) {
+      empty.push('interest-select');
+      sel.style.borderColor = '#e74c3c';
+    } else if (sel) {
+      sel.style.borderColor = '';
+    }
+
+    if (empty.length > 0) {
+      alert('Please fill all required fields!');
+      return;
+    }
+
+    var name = document.getElementById('c-name').value;
+    var phone = document.getElementById('c-phone').value;
+    var email = document.getElementById('c-email').value;
+    var interest = sel.value;
+    var date = document.getElementById('c-date').value;
+    var travelers = document.getElementById('c-travelers').value;
+    var message = document.getElementById('c-message').value;
+
+    var text = '*New Enquiry from ACOYA Website*%0A%0A' +
+               '*Name:* ' + name + '%0A' +
+               '*Phone:* ' + phone + '%0A' +
+               '*Email:* ' + email + '%0A' +
+               '*Interested In:* ' + interest + '%0A' +
+               (date ? '*Travel Date:* ' + date + '%0A' : '') +
+               (travelers ? '*Travelers:* ' + travelers + '%0A' : '') +
+               '*Message:* ' + message;
+
+    window.open('https://wa.me/919495768129?text=' + text, '_blank');
+
+    btn.textContent = 'Message Sent! ✓';
+    btn.style.background = '#2e7d32';
+
+    setTimeout(function() {
+      document.getElementById('c-name').value = '';
+      document.getElementById('c-phone').value = '';
+      document.getElementById('c-email').value = '';
+      document.getElementById('c-message').value = '';
+      document.getElementById('c-date').value = '';
+      document.getElementById('c-travelers').value = '';
+      sel.value = '';
+      btn.textContent = 'Send Message';
+      btn.style.background = '';
+    }, 3000);
+  }
+
+  function clearPkg() {
+    document.getElementById('pkg-highlight').classList.remove('visible');
+    history.replaceState({}, '', 'contact.html');
+  }
+
   renderNav('Contact');
   renderFooter();
   initReveal();
 
-  // Pre-fill package if redirected from packages page
-  window.addEventListener('load', () => {
-    const params = new URLSearchParams(window.location.search);
-    const pkg = params.get('pkg');
+  window.addEventListener('load', function() {
+    var params = new URLSearchParams(window.location.search);
+    var pkg = params.get('pkg');
     if (pkg) {
-      const el = document.getElementById('pkg-highlight');
+      var el = document.getElementById('pkg-highlight');
       document.getElementById('pkg-highlight-text').textContent = '📦 Enquiring about: ' + pkg;
       el.classList.add('visible');
-      const sel = document.getElementById('interest-select');
+      var sel = document.getElementById('interest-select');
       if (pkg.includes('Island') || pkg.includes('Lakshadweep')) {
         sel.value = 'Lakshadweep Tour Package';
       } else {
@@ -195,11 +279,6 @@ function validateAndSubmit(btn) {
       }
     }
   });
-
-  function clearPkg() {
-    document.getElementById('pkg-highlight').classList.remove('visible');
-    history.replaceState({}, '', 'contact.html');
-  }
 </script>
 </body>
 </html>
