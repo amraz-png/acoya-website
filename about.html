@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACOYA — About Us</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* STORY SECTION */
+  .story-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    max-width: 1200px; margin: 3rem auto 0; align-items: center;
+  }
+  .story-text p {
+    font-size: 0.95rem; color: var(--cream); line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+  .story-text p:first-of-type::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; color: var(--gold);
+    float: left; line-height: 0.9; margin: 0.3rem 0.6rem 0 0; font-weight: 600;
+  }
+  .story-card {
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 8px; padding: 2.5rem; position: relative;
+  }
+  .story-card::before {
+    content: '"'; position: absolute; top: -1.5rem; left: 1.5rem;
+    font-family: 'Cormorant Garamond', serif; font-size: 8rem;
+    color: var(--gold); opacity: 0.3; line-height: 1;
+  }
+  .story-quote {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+    font-style: italic; color: var(--white); line-height: 1.5; margin-bottom: 1.5rem;
+  }
+  .story-author { font-size: 0.85rem; color: var(--gold); letter-spacing: 1px; }
+
+  /* STATS BIG */
+  .big-stats {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem;
+    max-width: 1200px; margin: 3rem auto 0;
+  }
+  .big-stat {
+    text-align: center; padding: 2rem 1rem; background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.12); border-radius: 8px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .big-stat:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .big-stat-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 3rem;
+    font-weight: 600; color: var(--gold); line-height: 1; margin-bottom: 0.5rem;
+  }
+  .big-stat-label {
+    font-size: 0.78rem; color: var(--text-light);
+    letter-spacing: 1.5px; text-transform: uppercase;
+  }
+
+  /* TIMELINE */
+  .timeline { max-width: 850px; margin: 3rem auto 0; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    transform: translateX(-50%);
+  }
+  .tl-item {
+    display: flex; align-items: center; margin-bottom: 3rem;
+    position: relative;
+  }
+  .tl-item:nth-child(odd) { flex-direction: row-reverse; }
+  .tl-item:nth-child(odd) .tl-content { text-align: right; padding-right: 3rem; }
+  .tl-item:nth-child(even) .tl-content { padding-left: 3rem; }
+  .tl-content {
+    flex: 1; background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.15); border-radius: 8px;
+    padding: 1.5rem; transition: border-color 0.3s;
+  }
+  .tl-content:hover { border-color: var(--gold); }
+  .tl-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; color: var(--gold); margin-bottom: 0.4rem;
+  }
+  .tl-title { font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; font-weight: 600; }
+  .tl-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; }
+  .tl-dot {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--gold); border: 3px solid var(--navy);
+    z-index: 2;
+  }
+
+  /* FOUNDER */
+  .founder-card {
+    max-width: 900px; margin: 3rem auto 0;
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 8px; padding: 3rem; display: grid;
+    grid-template-columns: 200px 1fr; gap: 2.5rem; align-items: center;
+  }
+  .founder-avatar {
+    width: 200px; height: 200px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem; color: var(--navy); font-weight: 700;
+    box-shadow: 0 8px 24px rgba(201,168,76,0.25);
+  }
+  .founder-tag {
+    font-size: 0.72rem; color: var(--gold);
+    letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .founder-name {
+    font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;
+    color: var(--white); margin-bottom: 0.8rem;
+  }
+  .founder-role {
+    font-size: 0.85rem; color: var(--gold); font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+  .founder-text {
+    font-size: 0.92rem; color: var(--cream); line-height: 1.8;
+  }
+
+  /* FAQ */
+  .faq-wrap { max-width: 850px; margin: 3rem auto 0; }
+  .faq-item {
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 6px; margin-bottom: 1rem; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .faq-item.open { border-color: var(--gold); }
+  .faq-q {
+    padding: 1.3rem 1.5rem; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.95rem; color: var(--white); font-weight: 500;
+    transition: color 0.3s;
+  }
+  .faq-q:hover { color: var(--gold); }
+  .faq-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    color: var(--gold); display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0; transition: transform 0.3s;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 1.5rem;
+  }
+  .faq-item.open .faq-a {
+    max-height: 400px; padding: 0 1.5rem 1.4rem;
+  }
+  .faq-a p {
+    font-size: 0.88rem; color: var(--text-light); line-height: 1.7;
+  }
+
+  /* CTA */
+  .cta-banner {
+    max-width: 1000px; margin: 4rem auto 0;
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 12px; padding: 3rem; text-align: center;
+  }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+    color: var(--white); margin-bottom: 0.6rem;
+  }
+  .cta-title em { color: var(--gold); font-style: italic; }
+  .cta-desc {
+    font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.8rem;
+    max-width: 500px; margin-left: auto; margin-right: auto;
+  }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  @media(max-width:900px){
+    .story-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .big-stats { grid-template-columns: repeat(2,1fr); }
+    .timeline::before { left: 20px; }
+    .tl-item, .tl-item:nth-child(odd) { flex-direction: row; }
+    .tl-item .tl-content,
+    .tl-item:nth-child(odd) .tl-content { text-align: left; padding: 1.5rem; padding-left: 3.5rem; }
+    .tl-dot { left: 20px; }
+    .founder-card { grid-template-columns: 1fr; text-align: center; padding: 2rem; }
+    .founder-avatar { margin: 0 auto; width: 150px; height: 150px; font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-tag">Our Story</div>
+    <h1 class="page-title">About <em>ACOYA</em></h1>
+    <p class="page-desc">Born on the shores of Agatti Island, we've been crafting unforgettable journeys for over a decade.</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section style="background:var(--navy);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Who We Are</div>
+    <h2 class="section-title">A Journey Born of <em>Passion</em></h2>
+  </div>
+  <div class="story-grid">
+    <div class="story-text reveal">
+      <p>Founded in 2019 on the pristine shores of Agatti Island, ACOYA Tours & Travels began with a simple dream — to share the breathtaking beauty of Lakshadweep with the world, and to take our travelers beyond, to the finest destinations across the globe.</p>
+      <p>What started as a small island operation has grown into a trusted name in travel, serving over 50,000 happy travelers and counting. Yet, despite our growth, we've never lost sight of what matters most — personalized service, authentic experiences, and the genuine warmth of island hospitality.</p>
+      <p>Today, ACOYA stands as Lakshadweep's premier travel partner, offering everything from local island getaways to international luxury escapes, all crafted with the same care and attention to detail that defined us from day one.</p>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-quote">Travel isn't just about reaching a destination — it's about the memories you carry home. At ACOYA, we craft journeys worth remembering.</div>
+      <div class="story-author">— THE ACOYA PROMISE</div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG STATS -->
+<section style="background:var(--navy-mid);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">By the Numbers</div>
+    <h2 class="section-title">A Decade of <em>Excellence</em></h2>
+  </div>
+  <div class="big-stats">
+    <div class="big-stat reveal">
+      <div class="big-stat-num">10+</div>
+      <div class="big-stat-label">Years of Experience</div>
+    </div>
+    <div class="big-stat reveal">
+      <div class="big-stat-num">50K+</div>
+      <div class="big-stat-label">Happy Travelers</div>
+    </div>
+    <div class="big-stat reveal">
+      <div class="big-stat-num">50+</div>
+      <div class="big-stat-label">Destinations</div>
+    </div>
+    <div class="big-stat reveal">
+      <div class="big-stat-num">24/7</div>
+      <div class="big-stat-label">Customer Support</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section style="background:var(--navy);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Our Journey</div>
+    <h2 class="section-title">Milestones of <em>Growth</em></h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-year">2019</div>
+        <div class="tl-title">The Beginning</div>
+        <div class="tl-desc">ACOYA Tours & Travels was founded in Agatti Island, Lakshadweep with a vision to showcase the islands to the world.</div>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-year">2021</div>
+        <div class="tl-title">Expansion</div>
+        <div class="tl-desc">Expanded operations to international tour packages — Maldives, Dubai, and Southeast Asia became part of our offerings.</div>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">10,000 Travelers</div>
+        <div class="tl-desc">Crossed the milestone of 10,000 happy travelers and launched our cruise & ship booking division.</div>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-year">2025</div>
+        <div class="tl-title">50K+ Strong</div>
+        <div class="tl-desc">Reached 50,000+ travelers served and launched our digital platform to make booking effortless from anywhere in the world.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section style="background:var(--navy-mid);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Leadership</div>
+    <h2 class="section-title">Meet Our <em>Founder</em></h2>
+  </div>
+  <div class="founder-card reveal">
+    <div class="founder-avatar">A</div>
+    <div>
+      <div class="founder-tag">Founder & CEO</div>
+      <div class="founder-name">Amraz</div>
+      <div class="founder-role">Visionary behind ACOYA Tours & Travels</div>
+      <div class="founder-text">Born and raised in Lakshadweep, Amraz founded ACOYA in 2019 with a clear mission — to bring the beauty of his homeland to travelers worldwide while delivering world-class experiences across every destination. His deep love for the islands, combined with over a decade of experience in the travel industry, has shaped ACOYA into the trusted name it is today. Under his leadership, the company continues to grow while staying true to its roots — authentic, personal, and always traveler-first.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:var(--navy);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-tag">Got Questions?</div>
+    <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+  </div>
+  <div class="faq-wrap">
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Do I need a permit to visit Lakshadweep?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Yes, all visitors (including Indian citizens) need an entry permit to visit Lakshadweep. Don't worry — we handle the entire permit process for you as part of our package. Just provide the required documents and we'll take care of the rest.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>What's the best time to visit Lakshadweep?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>The ideal time to visit Lakshadweep is between October and May, when the weather is pleasant and the seas are calm. December to February is the peak season with the best conditions for water activities like snorkeling and diving.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>How do I reach Lakshadweep?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>You can reach Lakshadweep by flight (Agatti Airport) from Kochi, or by ship from Kochi to various islands. We arrange flights, ship bookings, and inter-island transfers as part of our packages — making your journey seamless from start to finish.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>What's included in your tour packages?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Our packages typically include accommodation, meals, transfers, sightseeing, water activities, and permits (where applicable). Each package is detailed clearly with inclusions and exclusions. We also offer customizable packages where you choose what you want included.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Can I customize my tour package?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Absolutely! We specialize in custom tours tailored to your interests, budget, and travel style. Whether it's a honeymoon, family trip, group tour, or solo adventure — share your preferences and we'll craft the perfect itinerary just for you.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>What's your cancellation policy?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Cancellation policies vary depending on the package, travel dates, and proximity to your trip. Generally, cancellations made 30+ days before travel get higher refunds, while last-minute cancellations may have limited refunds. Full details are shared at the time of booking.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Do you offer international tours?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Yes! Beyond Lakshadweep, we offer curated international packages to Maldives, Dubai, Southeast Asia, Europe, and many more destinations. Our team handles flights, visas, accommodation, and complete itinerary planning.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>How do I make a payment?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>We accept payments via UPI, bank transfer, debit/credit cards, and major digital wallets. Typically a booking advance is required to confirm the trip, with the balance paid before departure. Our team will guide you through the process when you book.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Is travel insurance included?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Travel insurance is not included by default but is highly recommended, especially for international tours. We can help arrange comprehensive travel insurance covering medical emergencies, trip cancellations, and lost baggage at competitive rates.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>How can I contact you for support during my trip?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Our team is available 24/7 throughout your trip. You can reach us anytime via phone (+91 94957 68129) or WhatsApp. We'll be there to assist with any questions, changes, or emergencies that come up during your travels.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner reveal">
+    <div class="cta-title">Ready to Start Your <em>Journey?</em></div>
+    <div class="cta-desc">Have a question we didn't answer? Our travel experts are just a message away.</div>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn-primary">Contact Us</a>
+      <a href="https://wa.me/919495768129" target="_blank" rel="noopener" class="btn-outline">Chat on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  function toggleFaq(item) {
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i) {
+      i.classList.remove('open');
+    });
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  renderNav('About');
+  renderFooter();
+  initReveal();
+</script>
+</body>
+</html>
