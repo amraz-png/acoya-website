@@ -96,26 +96,63 @@
   .feat-price span { font-size: 0.75rem; color: var(--text-light); font-family: 'Outfit',sans-serif; }
   .view-all-wrap { text-align: center; margin-top: 3rem; }
 
-  /* TESTIMONIALS STRIP */
-  .testi-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0; }
+  /* TESTIMONIAL CAROUSEL */
+  .testi-wrap { max-width: 1200px; margin: 3rem auto 0; position: relative; }
+  .testi-track-container { overflow: hidden; }
+  .testi-track {
+    display: flex; gap: 1.5rem;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
   .testi-card {
+    flex: 0 0 calc((100% - 3rem) / 3);
     background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.1);
     border-radius: 6px; padding: 1.8rem; transition: border-color 0.3s;
   }
   .testi-card:hover { border-color: rgba(201,168,76,0.35); }
   .testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; }
-  .testi-text { font-family: 'Cormorant Garamond',serif; font-size: 1.05rem; font-weight: 300; font-style: italic; color: var(--cream); line-height: 1.7; margin-bottom: 1.2rem; }
+  .testi-text {
+    font-family: 'Cormorant Garamond',serif; font-size: 1.05rem;
+    font-weight: 300; font-style: italic; color: var(--cream);
+    line-height: 1.7; margin-bottom: 1.2rem;
+  }
   .testi-author { display: flex; align-items: center; gap: 0.8rem; }
-  .testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+  .testi-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: var(--navy); flex-shrink: 0;
+  }
   .testi-name { font-size: 0.88rem; font-weight: 600; color: var(--white); }
   .testi-place { font-size: 0.75rem; color: var(--gold); }
 
+  .testi-controls {
+    display: flex; justify-content: center; align-items: center;
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .testi-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: transparent; border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold); font-size: 1.4rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .testi-btn:hover { background: var(--gold); color: var(--navy); }
+  .testi-dots { display: flex; gap: 0.5rem; }
+  .testi-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(201,168,76,0.3); cursor: pointer;
+    transition: all 0.3s; border: none;
+  }
+  .testi-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+
   @media(max-width:1024px){
     .why-grid { grid-template-columns: repeat(2,1fr); }
-    .featured-grid, .testi-strip { grid-template-columns: repeat(2,1fr); }
+    .featured-grid { grid-template-columns: repeat(2,1fr); }
+    .testi-card { flex: 0 0 calc((100% - 1.5rem) / 2); }
   }
   @media(max-width:600px){
-    .why-grid, .featured-grid, .testi-strip { grid-template-columns: 1fr; }
+    .why-grid, .featured-grid { grid-template-columns: 1fr; }
+    .testi-card { flex: 0 0 100%; }
     .hero-stats { position: static; flex-wrap: wrap; justify-content: center; margin-top: 2rem; }
     .scroll-hint { display: none; }
   }
@@ -142,9 +179,9 @@
     </div>
   </div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years Experience</div></div>
-    <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Happy Travelers</div></div>
-    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Destinations</div></div>
+    <div class="stat"><div class="stat-num"><span class="counter" data-target="10">0</span>+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-num"><span class="counter" data-target="50">0</span>K+</div><div class="stat-label">Happy Travelers</div></div>
+    <div class="stat"><div class="stat-num"><span class="counter" data-target="50">0</span>+</div><div class="stat-label">Destinations</div></div>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
 </section>
@@ -226,124 +263,136 @@
   <div class="view-all-wrap"><a href="packages.html" class="btn-primary">View All Packages</a></div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- TESTIMONIALS CAROUSEL -->
 <section style="background:var(--navy-mid);">
   <div style="max-width:1200px;margin:0 auto;">
     <div class="section-tag">Guest Stories</div>
     <h2 class="section-title">Stories of <em>Joy</em></h2>
     <p style="text-align:center;color:var(--text-light);max-width:600px;margin:0.8rem auto 0;font-size:0.95rem;">From over 50,000 happy travelers — here's what some of them have to say about their journey with ACOYA.</p>
   </div>
-  <div class="testi-strip">
 
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"ACOYA made our Lakshadweep trip absolutely magical. Every detail was perfect — the island, the water, the stay!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">A</div>
-        <div><div class="testi-name">Arjun & Priya Nair</div><div class="testi-place">Agatti Island • 2024</div></div>
+  <div class="testi-wrap">
+    <div class="testi-track-container">
+      <div class="testi-track" id="testi-track">
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"ACOYA made our Lakshadweep trip absolutely magical. Every detail was perfect — the island, the water, the stay!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">A</div>
+            <div><div class="testi-name">Arjun & Priya Nair</div><div class="testi-place">Agatti Island • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Amraz sir was such a great guide throughout our trip. Whatever doubt we had, one call and we got an instant reply. Truly 24/7 support!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">R</div>
+            <div><div class="testi-name">Rahul Menon</div><div class="testi-place">Dubai Package • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Our family cruise was breathtaking. The ACOYA team handled everything effortlessly. Will definitely book again!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">S</div>
+            <div><div class="testi-name">Sunitha Thomas</div><div class="testi-place">Cruise Package • 2023</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Honeymoon in the Maldives, planned to perfection. Amraz was incredibly helpful — answered every message even at midnight. Thank you ACOYA!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">F</div>
+            <div><div class="testi-name">Faisal & Ayesha</div><div class="testi-place">Maldives Honeymoon • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Booked a last-minute group trip for 12 people. Amraz sir made it happen flawlessly. Very professional and always reachable on call."</div>
+          <div class="testi-author">
+            <div class="testi-avatar">V</div>
+            <div><div class="testi-name">Vishnu Krishnan</div><div class="testi-place">Group Tour • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Bangaram Island felt like a private paradise. Amraz's local knowledge and personal attention made every moment special. Highly recommend ACOYA!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">M</div>
+            <div><div class="testi-name">Meera Pillai</div><div class="testi-place">Bangaram Island • 2025</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"I called Amraz sir at odd hours during my trip — every single time he picked up and helped. That kind of dedication is rare. ACOYA is the real deal."</div>
+          <div class="testi-author">
+            <div class="testi-avatar">K</div>
+            <div><div class="testi-name">Kiran Raj</div><div class="testi-place">Kavaratti Island • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"From flight booking to last-day pickup, Amraz handled everything. He's not just a travel agent — he feels like a friend guiding you. Loved the trip!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">N</div>
+            <div><div class="testi-name">Nisha Varghese</div><div class="testi-place">Lakshadweep • 2025</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"What I loved most about ACOYA — Amraz sir replies instantly, no matter what time. Booked our Dubai trip with full confidence. Excellent experience!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">S</div>
+            <div><div class="testi-name">Shafeeq Ahamed</div><div class="testi-place">Dubai Tour • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Honestly the best travel experience we've had. Amraz personally guided us through everything — visa, hotels, sightseeing. ACOYA exceeded expectations."</div>
+          <div class="testi-author">
+            <div class="testi-avatar">A</div>
+            <div><div class="testi-name">Anjana & Dileep</div><div class="testi-place">Singapore Tour • 2025</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"My parents are senior citizens and were nervous about travel. Amraz sir kept checking in throughout, made them feel safe. Truly grateful to ACOYA."</div>
+          <div class="testi-author">
+            <div class="testi-avatar">H</div>
+            <div><div class="testi-name">Haritha S.</div><div class="testi-place">Family Tour • 2024</div></div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Planned my solo trip to Lakshadweep with ACOYA. Amraz answered all my questions patiently, even before booking. That trust is why I chose them — and they delivered!"</div>
+          <div class="testi-author">
+            <div class="testi-avatar">J</div>
+            <div><div class="testi-name">Jithin Mohan</div><div class="testi-place">Solo Trip • 2025</div></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Amraz sir was such a great guide throughout our trip. Whatever doubt we had, one call and we got an instant reply. Truly 24/7 support!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">R</div>
-        <div><div class="testi-name">Rahul Menon</div><div class="testi-place">Dubai Package • 2024</div></div>
-      </div>
+    <div class="testi-controls">
+      <button class="testi-btn" onclick="testiNav(-1)" aria-label="Previous">‹</button>
+      <div class="testi-dots" id="testi-dots"></div>
+      <button class="testi-btn" onclick="testiNav(1)" aria-label="Next">›</button>
     </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Our family cruise was breathtaking. The ACOYA team handled everything effortlessly. Will definitely book again!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">S</div>
-        <div><div class="testi-name">Sunitha Thomas</div><div class="testi-place">Cruise Package • 2023</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Honeymoon in the Maldives, planned to perfection. Amraz was incredibly helpful — answered every message even at midnight. Thank you ACOYA!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">F</div>
-        <div><div class="testi-name">Faisal & Ayesha</div><div class="testi-place">Maldives Honeymoon • 2024</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Booked a last-minute group trip for 12 people. Amraz sir made it happen flawlessly. Very professional and always reachable on call."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">V</div>
-        <div><div class="testi-name">Vishnu Krishnan</div><div class="testi-place">Group Tour • 2024</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Bangaram Island felt like a private paradise. Amraz's local knowledge and personal attention made every moment special. Highly recommend ACOYA!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">M</div>
-        <div><div class="testi-name">Meera Pillai</div><div class="testi-place">Bangaram Island • 2025</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"I called Amraz sir at odd hours during my trip — every single time he picked up and helped. That kind of dedication is rare. ACOYA is the real deal."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">K</div>
-        <div><div class="testi-name">Kiran Raj</div><div class="testi-place">Kavaratti Island • 2024</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"From flight booking to last-day pickup, Amraz handled everything. He's not just a travel agent — he feels like a friend guiding you. Loved the trip!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">N</div>
-        <div><div class="testi-name">Nisha Varghese</div><div class="testi-place">Lakshadweep • 2025</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"What I loved most about ACOYA — Amraz sir replies instantly, no matter what time. Booked our Dubai trip with full confidence. Excellent experience!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">S</div>
-        <div><div class="testi-name">Shafeeq Ahamed</div><div class="testi-place">Dubai Tour • 2024</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Honestly the best travel experience we've had. Amraz personally guided us through everything — visa, hotels, sightseeing. ACOYA exceeded expectations."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">A</div>
-        <div><div class="testi-name">Anjana & Dileep</div><div class="testi-place">Singapore Tour • 2025</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"My parents are senior citizens and were nervous about travel. Amraz sir kept checking in throughout, made them feel safe. Truly grateful to ACOYA."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">H</div>
-        <div><div class="testi-name">Haritha S.</div><div class="testi-place">Family Tour • 2024</div></div>
-      </div>
-    </div>
-
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Planned my solo trip to Lakshadweep with ACOYA. Amraz answered all my questions patiently, even before booking. That trust is why I chose them — and they delivered!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">J</div>
-        <div><div class="testi-name">Jithin Mohan</div><div class="testi-place">Solo Trip • 2025</div></div>
-      </div>
-    </div>
-
   </div>
+
   <div class="view-all-wrap">
     <a href="about.html" class="btn-outline">Learn More About Us</a>
   </div>
@@ -352,9 +401,97 @@
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
 <script>
+  // Counter animation (triggered when stats section comes into view)
+  function animateCounters() {
+    document.querySelectorAll('.counter').forEach(function(el) {
+      var target = parseInt(el.dataset.target);
+      var current = 0;
+      var step = Math.max(1, Math.ceil(target / 40));
+      var interval = setInterval(function() {
+        current += step;
+        if (current >= target) { current = target; clearInterval(interval); }
+        el.textContent = current;
+      }, 30);
+    });
+  }
+  // Trigger counter on page load (hero is visible immediately)
+  setTimeout(animateCounters, 600);
+
+  // Testimonial carousel
+  var totalTestis = document.querySelectorAll('.testi-card').length;
+  var perView = 3;
+  var currentSlide = 0;
+  var autoSlideTimer;
+
+  function getPerView() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 1024) return 2;
+    return 3;
+  }
+
+  function totalSlides() {
+    return Math.max(1, totalTestis - perView + 1);
+  }
+
+  function buildDots() {
+    var dotsEl = document.getElementById('testi-dots');
+    dotsEl.innerHTML = '';
+    var slides = totalSlides();
+    var maxDots = Math.min(slides, 8);
+    for (var i = 0; i < maxDots; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      dot.onclick = (function(idx) { return function() { goToSlide(idx); }; })(i);
+      dotsEl.appendChild(dot);
+    }
+  }
+
+  function updateCarousel() {
+    var track = document.getElementById('testi-track');
+    var card = document.querySelector('.testi-card');
+    if (!card) return;
+    var cardWidth = card.offsetWidth;
+    var gap = 24;
+    track.style.transform = 'translateX(-' + (currentSlide * (cardWidth + gap)) + 'px)';
+
+    var dots = document.querySelectorAll('.testi-dot');
+    dots.forEach(function(d, i) { d.classList.toggle('active', i === Math.min(currentSlide, dots.length - 1)); });
+  }
+
+  function testiNav(dir) {
+    currentSlide = (currentSlide + dir + totalSlides()) % totalSlides();
+    updateCarousel();
+    resetAutoSlide();
+  }
+
+  function goToSlide(i) {
+    currentSlide = i;
+    updateCarousel();
+    resetAutoSlide();
+  }
+
+  function resetAutoSlide() {
+    clearInterval(autoSlideTimer);
+    autoSlideTimer = setInterval(function() { testiNav(1); }, 5000);
+  }
+
+  function initCarousel() {
+    perView = getPerView();
+    buildDots();
+    if (currentSlide >= totalSlides()) currentSlide = 0;
+    updateCarousel();
+    resetAutoSlide();
+  }
+
+  window.addEventListener('resize', initCarousel);
+
   renderNav('Home');
   renderFooter();
   initReveal();
+
+  // Init carousel after DOM ready
+  setTimeout(initCarousel, 100);
 </script>
 </body>
 </html>

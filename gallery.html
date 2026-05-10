@@ -14,6 +14,7 @@
     cursor: pointer; transition: all 0.3s; font-family:'Outfit',sans-serif;
   }
   .filter-btn.active, .filter-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 600; }
+
   .gallery-masonry { columns: 3; gap: 1.2rem; max-width: 1200px; margin: 0 auto; }
   .gallery-item {
     break-inside: avoid; margin-bottom: 1.2rem;
@@ -39,6 +40,71 @@
   .gallery-item:hover .gallery-overlay { opacity: 1; }
   .gallery-label { font-size: 0.9rem; color: var(--white); font-weight: 600; }
   .gallery-cat { font-size: 0.72rem; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+
+  /* zoom hint icon (shows on mobile too) */
+  .zoom-icon {
+    position: absolute; top: 0.8rem; right: 0.8rem;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(201,168,76,0.85); color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem; opacity: 0; transition: opacity 0.3s;
+  }
+  .gallery-item:hover .zoom-icon { opacity: 1; }
+  @media (hover: none) { .zoom-icon { opacity: 0.85; } }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 3000;
+    background: rgba(5,12,25,0.97); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center; padding: 1rem;
+    animation: fadeIn 0.3s ease;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox-content {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 10px; max-width: 700px; width: 100%;
+    overflow: hidden; position: relative;
+    animation: fadeUp 0.4s ease;
+  }
+  .lightbox-image {
+    height: 380px;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8rem;
+  }
+  .lightbox-info { padding: 1.5rem 2rem; }
+  .lightbox-cat { font-size: 0.72rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .lightbox-label { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--white); }
+  .lightbox-counter {
+    text-align: center; padding: 0.6rem; color: var(--text-light);
+    font-size: 0.8rem; border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .lightbox-close {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); font-size: 1.2rem; cursor: pointer;
+    z-index: 10; transition: all 0.3s;
+  }
+  .lightbox-close:hover { background: var(--gold); color: var(--navy); }
+  .lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); font-size: 1.4rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s; z-index: 10;
+  }
+  .lightbox-nav:hover { background: var(--gold); color: var(--navy); }
+  .lightbox-prev { left: -60px; }
+  .lightbox-next { right: -60px; }
+  @media (max-width: 800px) {
+    .lightbox-prev { left: 0.5rem; }
+    .lightbox-next { right: 0.5rem; }
+    .lightbox-image { height: 280px; font-size: 6rem; }
+  }
+
   @media(max-width:900px){ .gallery-masonry { columns: 2; } }
   @media(max-width:500px){ .gallery-masonry { columns: 1; } }
 </style>
@@ -50,7 +116,7 @@
   <div class="page-hero-content">
     <div class="page-tag">Visual Journey</div>
     <h1 class="page-title">Through Our <em>Lens</em></h1>
-    <p class="page-desc">Moments captured across the world's most beautiful destinations — from Lakshadweep to Switzerland.</p>
+    <p class="page-desc">Moments captured across the world's most beautiful destinations — from Lakshadweep to Switzerland. Tap any photo to view in full size.</p>
   </div>
 </div>
 
@@ -66,84 +132,170 @@
   </div>
 
   <div class="gallery-masonry" id="gallery-grid">
-    <div class="gallery-item" data-cat="lakshadweep">
+    <div class="gallery-item" data-cat="lakshadweep" onclick="openLightbox(0)">
       <div class="gallery-thumb tall">🏝️
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Agatti Lagoon</div><div class="gallery-cat">Lakshadweep</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="international">
+    <div class="gallery-item" data-cat="international" onclick="openLightbox(1)">
       <div class="gallery-thumb short">🏔️
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Swiss Alps Sunrise</div><div class="gallery-cat">Switzerland</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="cruise">
+    <div class="gallery-item" data-cat="cruise" onclick="openLightbox(2)">
       <div class="gallery-thumb tall">🚢
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Sunset on the Sea</div><div class="gallery-cat">Cruise</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="lakshadweep">
+    <div class="gallery-item" data-cat="lakshadweep" onclick="openLightbox(3)">
       <div class="gallery-thumb short">🪸
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Coral Reef Snorkeling</div><div class="gallery-cat">Lakshadweep</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="international">
+    <div class="gallery-item" data-cat="international" onclick="openLightbox(4)">
       <div class="gallery-thumb tall">🕌
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Dubai Skyline Night</div><div class="gallery-cat">Dubai</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="kerala">
+    <div class="gallery-item" data-cat="kerala" onclick="openLightbox(5)">
       <div class="gallery-thumb short">🌴
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Kerala Backwaters</div><div class="gallery-cat">Kerala</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="lakshadweep">
+    <div class="gallery-item" data-cat="lakshadweep" onclick="openLightbox(6)">
       <div class="gallery-thumb short">🌅
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Kavaratti Sunset</div><div class="gallery-cat">Lakshadweep</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="international">
+    <div class="gallery-item" data-cat="international" onclick="openLightbox(7)">
       <div class="gallery-thumb tall">⛩️
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Kyoto Temple</div><div class="gallery-cat">Japan</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="cruise">
+    <div class="gallery-item" data-cat="cruise" onclick="openLightbox(8)">
       <div class="gallery-thumb short">🌊
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Ocean Horizon</div><div class="gallery-cat">Cruise</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="lakshadweep">
+    <div class="gallery-item" data-cat="lakshadweep" onclick="openLightbox(9)">
       <div class="gallery-thumb tall">🐠
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Bangaram Diving</div><div class="gallery-cat">Lakshadweep</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="kerala">
+    <div class="gallery-item" data-cat="kerala" onclick="openLightbox(10)">
       <div class="gallery-thumb short">🍃
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Munnar Tea Gardens</div><div class="gallery-cat">Kerala</div></div>
       </div>
     </div>
-    <div class="gallery-item" data-cat="international">
+    <div class="gallery-item" data-cat="international" onclick="openLightbox(11)">
       <div class="gallery-thumb short">🏛️
+        <div class="zoom-icon">🔍</div>
         <div class="gallery-overlay"><div class="gallery-label">Rome Colosseum</div><div class="gallery-cat">Europe</div></div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();navLightbox(-1)">‹</button>
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-image" id="lb-image">🏝️</div>
+    <div class="lightbox-info">
+      <div class="lightbox-cat" id="lb-cat">Lakshadweep</div>
+      <div class="lightbox-label" id="lb-label">Agatti Lagoon</div>
+    </div>
+    <div class="lightbox-counter" id="lb-counter">1 / 12</div>
+  </div>
+  <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();navLightbox(1)">›</button>
+</div>
+
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
 <script>
-  renderNav('Gallery');
-  renderFooter();
+  // Build photo data from DOM
+  var photos = [];
+  document.querySelectorAll('.gallery-item').forEach(function(item) {
+    var thumb = item.querySelector('.gallery-thumb');
+    var emoji = thumb.childNodes[0].textContent.trim();
+    photos.push({
+      emoji: emoji,
+      label: item.querySelector('.gallery-label').textContent,
+      cat: item.querySelector('.gallery-cat').textContent,
+      filterCat: item.dataset.cat
+    });
+  });
+
+  var visiblePhotos = photos.map(function(_, i) { return i; });
+  var currentIdx = 0;
 
   function filterGallery(btn, cat) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
-    document.querySelectorAll('.gallery-item').forEach(item => {
-      const show = cat === 'all' || item.dataset.cat === cat;
+    visiblePhotos = [];
+    document.querySelectorAll('.gallery-item').forEach(function(item, i) {
+      var show = cat === 'all' || item.dataset.cat === cat;
       item.style.display = show ? 'block' : 'none';
+      if (show) visiblePhotos.push(i);
     });
   }
+
+  function openLightbox(i) {
+    currentIdx = visiblePhotos.indexOf(i);
+    if (currentIdx < 0) currentIdx = 0;
+    showPhoto();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (e && e.target.id !== 'lightbox' && e.type !== undefined && e.target.tagName !== 'BUTTON') return;
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function navLightbox(dir) {
+    currentIdx = (currentIdx + dir + visiblePhotos.length) % visiblePhotos.length;
+    showPhoto();
+  }
+  function showPhoto() {
+    var p = photos[visiblePhotos[currentIdx]];
+    document.getElementById('lb-image').textContent = p.emoji;
+    document.getElementById('lb-label').textContent = p.label;
+    document.getElementById('lb-cat').textContent = p.cat;
+    document.getElementById('lb-counter').textContent = (currentIdx + 1) + ' / ' + visiblePhotos.length;
+  }
+
+  // Keyboard support
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navLightbox(-1);
+    if (e.key === 'ArrowRight') navLightbox(1);
+  });
+
+  // Touch swipe support
+  var touchStartX = 0;
+  document.getElementById('lightbox').addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.getElementById('lightbox').addEventListener('touchend', function(e) {
+    var diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 50) navLightbox(diff < 0 ? 1 : -1);
+  });
+
+  renderNav('Gallery');
+  renderFooter();
 </script>
-<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
 </body>
 </html>

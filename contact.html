@@ -33,16 +33,8 @@
   .hours-badge::before { content: '●'; font-size: 0.55rem; animation: blink 1.5s ease infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  .form-card { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 2.5rem; }
-  .form-title { font-family:'Cormorant Garamond',serif; font-size: 1.8rem; color: var(--white); margin-bottom: 0.5rem; }
-  .form-title em { color: var(--gold); font-style: italic; }
-  .form-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.6; }
-
-  /* Social row */
-  .social-row {
-    display: flex; gap: 0.8rem; margin-top: 1rem;
-  }
-  .social-btn {
+  .social-row { display: flex; gap: 0.8rem; margin-top: 1rem; }
+  .contact-card .social-btn {
     width: 44px; height: 44px;
     display: flex; align-items: center; justify-content: center;
     background: rgba(201,168,76,0.1);
@@ -52,10 +44,85 @@
     font-size: 1.1rem;
     transition: all 0.3s;
   }
-  .social-btn:hover {
+  .contact-card .social-btn:hover {
     background: var(--gold); color: var(--navy);
     transform: translateY(-2px);
   }
+
+  /* FORM CARD */
+  .form-card { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 2.5rem; }
+  .form-title { font-family:'Cormorant Garamond',serif; font-size: 1.8rem; color: var(--white); margin-bottom: 0.5rem; }
+  .form-title em { color: var(--gold); font-style: italic; }
+  .form-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem; line-height: 1.6; }
+
+  /* PROGRESS BAR */
+  .progress-wrap { margin-bottom: 2.5rem; }
+  .progress-steps {
+    display: flex; justify-content: space-between;
+    position: relative; margin-bottom: 0.7rem;
+  }
+  .progress-steps::before {
+    content: ''; position: absolute; top: 16px; left: 0; right: 0;
+    height: 2px; background: rgba(201,168,76,0.15); z-index: 1;
+  }
+  .progress-steps::after {
+    content: ''; position: absolute; top: 16px; left: 0;
+    height: 2px; background: var(--gold); z-index: 2;
+    width: 0%; transition: width 0.4s ease;
+  }
+  .progress-wrap[data-step="1"] .progress-steps::after { width: 0%; }
+  .progress-wrap[data-step="2"] .progress-steps::after { width: 33%; }
+  .progress-wrap[data-step="3"] .progress-steps::after { width: 66%; }
+  .progress-wrap[data-step="4"] .progress-steps::after { width: 100%; }
+
+  .progress-step {
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    z-index: 3; flex: 1;
+  }
+  .progress-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--navy-mid); border: 2px solid rgba(201,168,76,0.3);
+    color: var(--text-light); font-size: 0.85rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .progress-step.done .progress-circle { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+  .progress-step.active .progress-circle { background: var(--gold); border-color: var(--gold); color: var(--navy); transform: scale(1.1); }
+  .progress-label {
+    font-size: 0.7rem; color: var(--text-light); letter-spacing: 1px;
+    text-transform: uppercase; text-align: center;
+  }
+  .progress-step.active .progress-label { color: var(--gold); font-weight: 600; }
+
+  /* STEP CONTENT */
+  .form-step { display: none; animation: fadeUp 0.4s ease; }
+  .form-step.active { display: block; }
+  .step-heading {
+    font-family:'Cormorant Garamond',serif; font-size: 1.4rem;
+    color: var(--white); margin-bottom: 0.4rem;
+  }
+  .step-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.5rem; }
+
+  /* OPTION TILES (Step 1) */
+  .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem; }
+  .option-tile {
+    padding: 1rem 0.8rem; background: var(--navy);
+    border: 1.5px solid rgba(201,168,76,0.2); border-radius: 6px;
+    cursor: pointer; transition: all 0.3s; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  }
+  .option-tile:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .option-tile.selected {
+    border-color: var(--gold); background: rgba(201,168,76,0.1);
+  }
+  .option-emoji { font-size: 1.6rem; }
+  .option-label { font-size: 0.83rem; color: var(--cream); font-weight: 500; }
+  .option-tile.selected .option-label { color: var(--gold); font-weight: 600; }
+
+  /* FORM FIELDS */
+  .field-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
+  .field-row > .field-group { margin-bottom: 0; }
 
   /* PKG highlight */
   .pkg-highlight {
@@ -65,7 +132,47 @@
   }
   .pkg-highlight.visible { display: flex; align-items: center; gap: 0.8rem; }
 
-  @media(max-width:900px){ .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
+  /* NAV BUTTONS */
+  .step-nav {
+    display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem;
+  }
+  .step-nav button {
+    flex: 1; padding: 0.9rem 1.5rem; border-radius: 4px;
+    font-family:'Outfit',sans-serif; font-size: 0.85rem;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .btn-back {
+    background: transparent; border: 1px solid rgba(201,168,76,0.3);
+    color: var(--text-light);
+  }
+  .btn-back:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-next {
+    background: var(--gold); border: none; color: var(--navy);
+  }
+  .btn-next:hover { background: var(--gold-light); }
+
+  /* SUCCESS */
+  .success-box {
+    text-align: center; padding: 2rem 1rem;
+    animation: fadeUp 0.5s ease;
+  }
+  .success-icon {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: var(--navy); margin: 0 auto 1.2rem;
+  }
+
+  @media(max-width:900px){
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .progress-label { font-size: 0.62rem; }
+  }
+  @media(max-width:600px){
+    .form-card { padding: 1.5rem; }
+    .field-row { grid-template-columns: 1fr; }
+    .option-grid { grid-template-columns: 1fr 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -88,7 +195,7 @@
         <div>
           <div class="contact-label">Office Address</div>
           <div class="contact-val">
-            904/15 ACOYA Tours & Travels LLP<br>
+            ACOYA Tours & Travels<br>
             Agatti Island, Lakshadweep<br>
             Union Territory, India
           </div>
@@ -121,7 +228,6 @@
           <div class="hours-badge">Open 24 / 7</div>
         </div>
       </div>
-      <!-- SOCIAL ICONS -->
       <div class="contact-card reveal">
         <div class="contact-icon">🌐</div>
         <div style="flex:1;">
@@ -134,10 +240,10 @@
       </div>
     </div>
 
-    <!-- FORM -->
+    <!-- MULTI-STEP FORM -->
     <div class="form-card reveal">
       <div class="form-title">Send Us a <em>Message</em></div>
-      <div class="form-sub">Fill in the form and we'll get back to you within a few hours.</div>
+      <div class="form-sub">Just 4 quick steps — we'll get back to you within hours.</div>
 
       <div class="pkg-highlight" id="pkg-highlight">
         <span>📦</span>
@@ -145,114 +251,205 @@
         <button onclick="clearPkg()" style="margin-left:auto;background:none;border:none;color:var(--gold);cursor:pointer;font-size:1rem;">✕</button>
       </div>
 
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Full Name</label>
+      <!-- PROGRESS -->
+      <div class="progress-wrap" id="progress-wrap" data-step="1">
+        <div class="progress-steps">
+          <div class="progress-step active" data-s="1"><div class="progress-circle">1</div><div class="progress-label">Where</div></div>
+          <div class="progress-step" data-s="2"><div class="progress-circle">2</div><div class="progress-label">When</div></div>
+          <div class="progress-step" data-s="3"><div class="progress-circle">3</div><div class="progress-label">Details</div></div>
+          <div class="progress-step" data-s="4"><div class="progress-circle">4</div><div class="progress-label">Message</div></div>
+        </div>
+      </div>
+
+      <!-- STEP 1: WHERE -->
+      <div class="form-step active" id="step-1">
+        <div class="step-heading">Where do you want to go?</div>
+        <div class="step-sub">Pick the destination or service you're interested in</div>
+        <div class="option-grid" id="dest-tiles">
+          <div class="option-tile" data-val="Lakshadweep Tour Package"><div class="option-emoji">🏝️</div><div class="option-label">Lakshadweep</div></div>
+          <div class="option-tile" data-val="Maldives"><div class="option-emoji">🌊</div><div class="option-label">Maldives</div></div>
+          <div class="option-tile" data-val="Dubai"><div class="option-emoji">🕌</div><div class="option-label">Dubai</div></div>
+          <div class="option-tile" data-val="Kerala"><div class="option-emoji">🌴</div><div class="option-label">Kerala</div></div>
+          <div class="option-tile" data-val="Singapore"><div class="option-emoji">🌆</div><div class="option-label">Singapore</div></div>
+          <div class="option-tile" data-val="Thailand"><div class="option-emoji">🐘</div><div class="option-label">Thailand</div></div>
+          <div class="option-tile" data-val="Europe"><div class="option-emoji">🏛️</div><div class="option-label">Europe</div></div>
+          <div class="option-tile" data-val="Other / Custom Trip"><div class="option-emoji">✨</div><div class="option-label">Other</div></div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-next" onclick="nextStep(1)">Next →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: WHEN -->
+      <div class="form-step" id="step-2">
+        <div class="step-heading">When would you like to travel?</div>
+        <div class="step-sub">Approximate date and group size — flexible is fine</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Travel Date</label>
+            <input type="date" id="c-date">
+          </div>
+          <div class="field-group">
+            <label>No. of Travelers</label>
+            <input type="number" id="c-travelers" placeholder="2" min="1">
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(2)">← Back</button>
+          <button class="btn-next" onclick="nextStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: DETAILS -->
+      <div class="form-step" id="step-3">
+        <div class="step-heading">Your contact details</div>
+        <div class="step-sub">So we can get back to you quickly</div>
+        <div class="field-group">
+          <label>Full Name *</label>
           <input type="text" id="c-name" placeholder="Your name">
         </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" id="c-phone" placeholder="+91 XXXXX XXXXX">
+        <div class="field-row">
+          <div class="field-group">
+            <label>Phone *</label>
+            <input type="tel" id="c-phone" placeholder="+91 XXXXX XXXXX">
+          </div>
+          <div class="field-group">
+            <label>Email *</label>
+            <input type="email" id="c-email" placeholder="your@email.com">
+          </div>
         </div>
-        <div class="form-group full">
-          <label>Email</label>
-          <input type="email" id="c-email" placeholder="your@email.com">
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(3)">← Back</button>
+          <button class="btn-next" onclick="nextStep(3)">Next →</button>
         </div>
-        <div class="form-group full">
-          <label>I'm Interested In</label>
-          <select id="interest-select">
-            <option value="">Select a service</option>
-            <option>Lakshadweep Tour Package</option>
-            <option>International Tour Package</option>
-            <option>Flight Booking</option>
-            <option>Ship / Cruise Booking</option>
-            <option>Custom Tour Planning</option>
-            <option>Honeymoon Package</option>
-            <option>Group Tour</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Travel Date</label>
-          <input type="date" id="c-date">
-        </div>
-        <div class="form-group">
-          <label>No. of Travelers</label>
-          <input type="number" id="c-travelers" placeholder="2" min="1">
-        </div>
-        <div class="form-group full">
-          <label>Your Message</label>
-          <textarea id="c-message" placeholder="Tell us about your travel plans, preferences, budget..."></textarea>
-        </div>
-        <button class="submit-btn" onclick="validateAndSubmit(this)">Send Message</button>
       </div>
+
+      <!-- STEP 4: MESSAGE -->
+      <div class="form-step" id="step-4">
+        <div class="step-heading">Anything else?</div>
+        <div class="step-sub">Tell us about your preferences, budget, or special requests</div>
+        <div class="field-group">
+          <label>Your Message *</label>
+          <textarea id="c-message" placeholder="E.g., Honeymoon trip, prefer beach resort, budget around ₹50,000 per person..." style="min-height:140px;"></textarea>
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(4)">← Back</button>
+          <button class="btn-next" id="submit-btn" onclick="submitForm()">Send Message</button>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="form-step" id="step-success">
+        <div class="success-box">
+          <div class="success-icon">✓</div>
+          <div class="step-heading" style="font-size:1.6rem;">Opening WhatsApp...</div>
+          <div class="step-sub">Your enquiry is ready! We'll respond within a few hours.</div>
+          <button class="btn-next" style="max-width:200px;margin:1rem auto 0;" onclick="resetForm()">Send Another</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
 <div id="footer-placeholder"></div>
-
 <script src="shared.js"></script>
 <script>
-  function validateAndSubmit(btn) {
-    var ids = ['c-name', 'c-phone', 'c-email', 'c-message'];
-    var empty = [];
-    ids.forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el && !el.value.trim()) {
-        empty.push(id);
-        el.style.borderColor = '#e74c3c';
-      } else if (el) {
-        el.style.borderColor = '';
-      }
+  var state = {
+    destination: '',
+    date: '',
+    travelers: '',
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  };
+
+  // Destination tile selection
+  document.querySelectorAll('#dest-tiles .option-tile').forEach(function(tile) {
+    tile.addEventListener('click', function() {
+      document.querySelectorAll('#dest-tiles .option-tile').forEach(function(t) { t.classList.remove('selected'); });
+      this.classList.add('selected');
+      state.destination = this.dataset.val;
     });
+  });
 
-    var sel = document.getElementById('interest-select');
-    if (sel && !sel.value) {
-      empty.push('interest-select');
-      sel.style.borderColor = '#e74c3c';
-    } else if (sel) {
-      sel.style.borderColor = '';
+  function setStep(n) {
+    document.querySelectorAll('.form-step').forEach(function(s) { s.classList.remove('active'); });
+    var stepEl = document.getElementById('step-' + n);
+    if (stepEl) stepEl.classList.add('active');
+
+    document.getElementById('progress-wrap').setAttribute('data-step', n);
+    document.querySelectorAll('.progress-step').forEach(function(p) {
+      var s = parseInt(p.dataset.s);
+      p.classList.remove('active', 'done');
+      if (s === n) p.classList.add('active');
+      else if (s < n) p.classList.add('done');
+    });
+  }
+
+  function nextStep(current) {
+    if (current === 1) {
+      if (!state.destination) {
+        alert('Please select a destination first.');
+        return;
+      }
+    } else if (current === 3) {
+      var name = document.getElementById('c-name').value.trim();
+      var phone = document.getElementById('c-phone').value.trim();
+      var email = document.getElementById('c-email').value.trim();
+      var missing = [];
+      if (!name) { missing.push('Name'); document.getElementById('c-name').style.borderColor = '#e74c3c'; }
+      else document.getElementById('c-name').style.borderColor = '';
+      if (!phone) { missing.push('Phone'); document.getElementById('c-phone').style.borderColor = '#e74c3c'; }
+      else document.getElementById('c-phone').style.borderColor = '';
+      if (!email) { missing.push('Email'); document.getElementById('c-email').style.borderColor = '#e74c3c'; }
+      else document.getElementById('c-email').style.borderColor = '';
+      if (missing.length) { alert('Please fill: ' + missing.join(', ')); return; }
+      state.name = name; state.phone = phone; state.email = email;
     }
+    setStep(current + 1);
+  }
 
-    if (empty.length > 0) {
-      alert('Please fill all required fields!');
+  function prevStep(current) {
+    setStep(current - 1);
+  }
+
+  function submitForm() {
+    var msg = document.getElementById('c-message').value.trim();
+    if (!msg) {
+      alert('Please write your message.');
+      document.getElementById('c-message').style.borderColor = '#e74c3c';
       return;
     }
+    document.getElementById('c-message').style.borderColor = '';
 
-    var name = document.getElementById('c-name').value;
-    var phone = document.getElementById('c-phone').value;
-    var email = document.getElementById('c-email').value;
-    var interest = sel.value;
-    var date = document.getElementById('c-date').value;
-    var travelers = document.getElementById('c-travelers').value;
-    var message = document.getElementById('c-message').value;
+    state.message = msg;
+    state.date = document.getElementById('c-date').value;
+    state.travelers = document.getElementById('c-travelers').value;
 
-    var text = '*New Enquiry from ACOYA Website*%0A%0A' +
-               '*Name:* ' + name + '%0A' +
-               '*Phone:* ' + phone + '%0A' +
-               '*Email:* ' + email + '%0A' +
-               '*Interested In:* ' + interest + '%0A' +
-               (date ? '*Travel Date:* ' + date + '%0A' : '') +
-               (travelers ? '*Travelers:* ' + travelers + '%0A' : '') +
-               '*Message:* ' + message;
+    var text = '*New Enquiry from ACOYA Website*%0A%0A'
+      + '*Name:* ' + state.name + '%0A'
+      + '*Phone:* ' + state.phone + '%0A'
+      + '*Email:* ' + state.email + '%0A'
+      + '*Interested In:* ' + state.destination + '%0A'
+      + (state.date ? '*Travel Date:* ' + state.date + '%0A' : '')
+      + (state.travelers ? '*Travelers:* ' + state.travelers + '%0A' : '')
+      + '*Message:* ' + state.message;
 
     window.open('https://wa.me/919495768129?text=' + text, '_blank');
 
-    btn.textContent = 'Message Sent! ✓';
-    btn.style.background = '#2e7d32';
+    setStep('success');
+  }
 
-    setTimeout(function() {
-      document.getElementById('c-name').value = '';
-      document.getElementById('c-phone').value = '';
-      document.getElementById('c-email').value = '';
-      document.getElementById('c-message').value = '';
-      document.getElementById('c-date').value = '';
-      document.getElementById('c-travelers').value = '';
-      sel.value = '';
-      btn.textContent = 'Send Message';
-      btn.style.background = '';
-    }, 3000);
+  function resetForm() {
+    state = { destination: '', date: '', travelers: '', name: '', phone: '', email: '', message: '' };
+    document.querySelectorAll('#dest-tiles .option-tile').forEach(function(t) { t.classList.remove('selected'); });
+    ['c-name','c-phone','c-email','c-date','c-travelers','c-message'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) { el.value = ''; el.style.borderColor = ''; }
+    });
+    setStep(1);
   }
 
   function clearPkg() {
@@ -264,6 +461,7 @@
   renderFooter();
   initReveal();
 
+  // Pre-fill destination if redirected from packages page
   window.addEventListener('load', function() {
     var params = new URLSearchParams(window.location.search);
     var pkg = params.get('pkg');
@@ -271,11 +469,13 @@
       var el = document.getElementById('pkg-highlight');
       document.getElementById('pkg-highlight-text').textContent = '📦 Enquiring about: ' + pkg;
       el.classList.add('visible');
-      var sel = document.getElementById('interest-select');
-      if (pkg.includes('Island') || pkg.includes('Lakshadweep')) {
-        sel.value = 'Lakshadweep Tour Package';
-      } else {
-        sel.value = 'International Tour Package';
+
+      // Auto-select Lakshadweep tile if package is an island
+      var lakshadweepIslands = ['Agatti', 'Kavaratti', 'Bangaram', 'Minicoy', 'Kalpeni', 'Kadmat', 'Lakshadweep'];
+      var isLakshadweep = lakshadweepIslands.some(function(i) { return pkg.includes(i); });
+      if (isLakshadweep) {
+        var tile = document.querySelector('#dest-tiles .option-tile[data-val="Lakshadweep Tour Package"]');
+        if (tile) { tile.click(); }
       }
     }
   });
