@@ -21,6 +21,98 @@
   .cruise-dur { font-size: 0.75rem; color: var(--text-light); }
   .cruise-price { font-family:'Cormorant Garamond',serif; font-size: 1.3rem; color: var(--gold); margin-top: 0.8rem; }
   .section-sub { max-width: 1200px; margin: 0 auto; }
+
+  /* PHONE WITH COUNTRY CODE */
+  .phone-input-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0.6rem;
+  }
+  .country-code-select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    padding: 0.9rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .country-code-select:focus { border-color: var(--gold); }
+  .country-code-select option { background: var(--navy-mid); color: var(--cream); padding: 8px; }
+  @media(max-width:600px){
+    .phone-input-row { grid-template-columns: 90px 1fr; gap: 0.4rem; }
+    .country-code-select { padding: 0.9rem 0.3rem; font-size: 0.85rem; }
+  }
+
+  /* SUBMIT BUTTON DISABLED */
+  .submit-btn:disabled {
+    opacity: 1; cursor: not-allowed;
+    background: rgba(201,168,76,0.2); color: rgba(248,244,237,0.4);
+    pointer-events: none;
+  }
+
+  /* SUCCESS SCREEN */
+  .success-screen {
+    display: none; text-align: center; padding: 3rem 1.5rem;
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 8px; max-width: 600px; margin: 3rem auto 0;
+    animation: fadeUp 0.5s ease;
+  }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; color: var(--navy); margin: 0 auto 1.5rem;
+    animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  @keyframes successPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .success-title {
+    font-family:'Cormorant Garamond',serif; font-size: 2rem;
+    color: var(--white); margin-bottom: 0.6rem;
+  }
+  .success-title em { color: var(--gold); font-style: italic; }
+  .success-msg {
+    font-size: 0.95rem; color: var(--text-light);
+    line-height: 1.7; max-width: 400px; margin: 0 auto 1.5rem;
+  }
+  .success-info {
+    background: rgba(46,125,50,0.1); border: 1px solid rgba(46,125,50,0.3);
+    color: #81C784; padding: 0.7rem 1rem; border-radius: 6px;
+    font-size: 0.82rem; margin-bottom: 1.5rem; max-width: 420px;
+    margin-left: auto; margin-right: auto;
+  }
+  .reset-btn {
+    background: var(--gold); color: var(--navy);
+    padding: 0.9rem 2rem; border: none; border-radius: 4px;
+    font-family: 'Outfit', sans-serif; font-size: 0.85rem;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .reset-btn:hover { background: var(--gold-light); }
+
+  /* ERROR + SPINNER */
+  .error-msg {
+    background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.4);
+    color: #ff7e6b; padding: 0.7rem 1rem; border-radius: 4px;
+    font-size: 0.85rem; margin-bottom: 1rem;
+  }
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--navy); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle; margin-right: 0.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   @media(max-width:768px){ .cruise-cards { grid-template-columns: repeat(2,1fr); } }
   @media(max-width:480px){ .cruise-cards { grid-template-columns: 1fr; } }
 </style>
@@ -42,22 +134,22 @@
     <h2 class="section-title">Choose Your <em>Cruise</em></h2>
   </div>
 
-  <div class="cruise-cards">
-    <div class="cruise-card reveal" onclick="selectCruise(this,'Kochi — Lakshadweep — Kochi')">
+  <div class="cruise-cards" id="cruise-cards">
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Kochi - Lakshadweep - Kochi')">
       <div class="cruise-emoji">🏝️</div>
       <div class="cruise-name">Lakshadweep Cruise</div>
       <div class="cruise-route">Kochi → Lakshadweep → Kochi</div>
       <div class="cruise-dur">⏱ 5 Nights / 6 Days</div>
       <div class="cruise-price">₹35,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
     </div>
-    <div class="cruise-card reveal" onclick="selectCruise(this,'Kerala — Maldives Cruise')">
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Kerala - Maldives Cruise')">
       <div class="cruise-emoji">🌊</div>
       <div class="cruise-name">Kerala–Maldives Cruise</div>
       <div class="cruise-route">Kochi → Maldives → Kochi</div>
       <div class="cruise-dur">⏱ 7 Nights / 8 Days</div>
       <div class="cruise-price">₹75,000 <span style="font-size:0.7rem;color:var(--text-light);font-family:'Outfit',sans-serif;">/ person</span></div>
     </div>
-    <div class="cruise-card reveal" onclick="selectCruise(this,'Mumbai — Goa Cruise')">
+    <div class="cruise-card reveal" onclick="selectCruise(this,'Mumbai - Goa Cruise')">
       <div class="cruise-emoji">⚓</div>
       <div class="cruise-name">Mumbai–Goa Cruise</div>
       <div class="cruise-route">Mumbai → Goa → Mumbai</div>
@@ -87,37 +179,68 @@
     </div>
   </div>
 
-  <div class="cruise-wrap">
+  <div class="cruise-wrap" id="form-container">
     <div class="section-tag">Booking Details</div>
     <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white);margin-bottom:2rem;">Complete Your <em style="color:var(--gold);">Booking</em></h3>
     <div class="form-grid">
       <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" placeholder="Passenger name">
+        <label>Full Name *</label>
+        <input type="text" placeholder="Passenger name" id="s-name">
       </div>
       <div class="form-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="+91 XXXXX XXXXX">
+        <label>Phone Number *</label>
+        <div class="phone-input-row">
+          <select id="s-country-code" class="country-code-select">
+            <option value="">Code</option>
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+966">🇸🇦 +966</option>
+            <option value="+974">🇶🇦 +974</option>
+            <option value="+965">🇰🇼 +965</option>
+            <option value="+968">🇴🇲 +968</option>
+            <option value="+973">🇧🇭 +973</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+61">🇦🇺 +61</option>
+            <option value="+65">🇸🇬 +65</option>
+            <option value="+60">🇲🇾 +60</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+39">🇮🇹 +39</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+41">🇨🇭 +41</option>
+            <option value="+81">🇯🇵 +81</option>
+            <option value="+86">🇨🇳 +86</option>
+            <option value="+82">🇰🇷 +82</option>
+            <option value="+66">🇹🇭 +66</option>
+            <option value="+960">🇲🇻 +960</option>
+            <option value="+94">🇱🇰 +94</option>
+            <option value="+880">🇧🇩 +880</option>
+            <option value="+977">🇳🇵 +977</option>
+            <option value="other">🌍 Other</option>
+          </select>
+          <input type="tel" id="s-phone" placeholder="Enter your number">
+        </div>
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="your@email.com">
+        <label>Email *</label>
+        <input type="email" placeholder="your@email.com" id="s-email">
       </div>
       <div class="form-group">
-        <label>No. of Passengers</label>
-        <input type="number" placeholder="2" min="1">
+        <label>No. of Passengers *</label>
+        <input type="number" placeholder="2" min="1" id="s-pax">
       </div>
       <div class="form-group full">
-        <label>Selected Cruise / Route</label>
-        <input type="text" id="selected-cruise" placeholder="Select a cruise above or type here" readonly style="cursor:pointer;">
+        <label>Selected Cruise / Route *</label>
+        <input type="text" id="selected-cruise" placeholder="Tap a cruise card above" readonly style="cursor:pointer;">
       </div>
       <div class="form-group">
-        <label>Travel Date</label>
-        <input type="date">
+        <label>Travel Date *</label>
+        <input type="date" id="s-date">
       </div>
       <div class="form-group">
         <label>Cabin Type</label>
-        <select>
+        <select id="s-cabin">
           <option>Interior Cabin</option>
           <option>Ocean View Cabin</option>
           <option>Balcony Cabin</option>
@@ -127,26 +250,160 @@
       </div>
       <div class="form-group full">
         <label>Special Requirements</label>
-        <textarea placeholder="Dietary needs, accessibility, anniversary/honeymoon setup, cabin preferences..."></textarea>
+        <textarea placeholder="Dietary needs, accessibility, anniversary/honeymoon setup, cabin preferences..." id="s-special"></textarea>
       </div>
-      <button class="submit-btn" onclick="handleSubmit(this,'Cruise Booking Sent!')">🚢 Send Cruise Booking Request</button>
+      <div class="form-group full" id="error-display"></div>
+      <button class="submit-btn" id="ship-submit-btn" onclick="submitCruise()" disabled>🚢 Send Cruise Booking Request</button>
     </div>
+  </div>
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Booking Request <em>Received!</em></div>
+    <div class="success-msg">Thank you for your cruise booking enquiry. Our team will check availability and pricing, and get back to you within 24 hours.</div>
+    <div class="success-info">📧 Confirmation sent to our team. We'll contact you soon!</div>
+    <button class="reset-btn" onclick="resetCruise()">Send Another Request</button>
   </div>
 </section>
 
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
 <script>
+  var WEB3FORMS_KEY = 'dbaa90d6-e37a-4c74-bcab-20a80ed87a9d';
+
   renderNav('Cruises');
   renderFooter();
   initReveal();
 
   function selectCruise(card, name) {
-    document.querySelectorAll('.cruise-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.cruise-card').forEach(function(c) { c.classList.remove('selected'); });
     card.classList.add('selected');
     document.getElementById('selected-cruise').value = name;
+    validateCruiseForm();
+  }
+
+  // Set minimum date to today
+  (function() {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('s-date').setAttribute('min', yyyy + '-' + mm + '-' + dd);
+  })();
+
+  // Phone: only allow digits, spaces, dashes
+  document.getElementById('s-phone').addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d\s\-]/g, '');
+  });
+
+  function validateCruiseForm() {
+    var name = document.getElementById('s-name').value.trim();
+    var code = document.getElementById('s-country-code').value;
+    var phone = document.getElementById('s-phone').value.trim();
+    var phoneDigits = phone.replace(/\D/g, '');
+    var email = document.getElementById('s-email').value.trim();
+    var pax = document.getElementById('s-pax').value;
+    var cruise = document.getElementById('selected-cruise').value.trim();
+    var date = document.getElementById('s-date').value;
+    var emailValid = email.length > 0 && email.indexOf('@') > 0 && email.indexOf('.') > 0;
+
+    var ok = name.length >= 2 && code !== '' && phoneDigits.length >= 7
+      && emailValid && pax !== '' && parseInt(pax) >= 1
+      && cruise.length >= 2 && date !== '';
+
+    document.getElementById('ship-submit-btn').disabled = !ok;
+  }
+
+  ['s-name','s-phone','s-email','s-pax','s-date','s-special'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', validateCruiseForm);
+      el.addEventListener('change', validateCruiseForm);
+    }
+  });
+  document.getElementById('s-country-code').addEventListener('change', validateCruiseForm);
+
+  function submitCruise() {
+    var errorEl = document.getElementById('error-display');
+    errorEl.innerHTML = '';
+
+    var name = document.getElementById('s-name').value.trim();
+    var code = document.getElementById('s-country-code').value;
+    var phoneNum = document.getElementById('s-phone').value.trim();
+    var phone = (code === 'other' ? '' : code + ' ') + phoneNum;
+    var email = document.getElementById('s-email').value.trim();
+    var pax = document.getElementById('s-pax').value;
+    var cruise = document.getElementById('selected-cruise').value.trim();
+    var date = document.getElementById('s-date').value;
+    var cabin = document.getElementById('s-cabin').value;
+    var special = document.getElementById('s-special').value.trim() || 'None';
+
+    var btn = document.getElementById('ship-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Sending...';
+
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: 'New Cruise Booking: ' + cruise + ' - ' + name,
+      from_name: 'ACOYA Cruise Booking',
+      replyto: email,
+      'Customer Name': name,
+      'Phone Number': phone,
+      'Email Address': email,
+      'Selected Cruise': cruise,
+      'Travel Date': date,
+      'Number of Passengers': pax,
+      'Cabin Type': cabin,
+      'Special Requirements': special,
+      'Submitted via': 'acoyatravels.com/ship'
+    };
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      if (data.success) {
+        document.getElementById('form-container').style.display = 'none';
+        document.getElementById('cruise-cards').style.display = 'none';
+        document.getElementById('success-screen').classList.add('show');
+        window.scrollTo({ top: document.getElementById('success-screen').offsetTop - 100, behavior: 'smooth' });
+      } else {
+        showCruiseError(data.message || 'Could not send. Please call us directly.');
+      }
+    })
+    .catch(function(err) {
+      showCruiseError('Network error. Please check your connection or call us directly.');
+    });
+  }
+
+  function showCruiseError(msg) {
+    var btn = document.getElementById('ship-submit-btn');
+    btn.disabled = false;
+    btn.innerHTML = '🚢 Send Cruise Booking Request';
+    document.getElementById('error-display').innerHTML = '<div class="error-msg">⚠️ ' + msg + '<br><a href="tel:+919495768129" style="color:#ff7e6b;text-decoration:underline;">Call +91 94957 68129</a></div>';
+  }
+
+  function resetCruise() {
+    ['s-name','s-phone','s-email','s-pax','s-date','s-special','selected-cruise'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('s-country-code').value = '';
+    document.getElementById('s-cabin').value = 'Interior Cabin';
+    document.querySelectorAll('.cruise-card').forEach(function(c) { c.classList.remove('selected'); });
+    document.getElementById('error-display').innerHTML = '';
+    var btn = document.getElementById('ship-submit-btn');
+    btn.innerHTML = '🚢 Send Cruise Booking Request';
+    btn.disabled = true;
+    document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('form-container').style.display = 'block';
+    document.getElementById('cruise-cards').style.display = 'grid';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
-<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
 </body>
 </html>

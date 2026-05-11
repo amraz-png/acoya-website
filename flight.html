@@ -20,6 +20,98 @@
   .info-box-icon { font-size: 2rem; margin-bottom: 0.8rem; }
   .info-box-title { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
   .info-box-desc { font-size: 0.8rem; color: var(--text-light); line-height: 1.5; }
+
+  /* PHONE WITH COUNTRY CODE */
+  .phone-input-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0.6rem;
+  }
+  .country-code-select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    padding: 0.9rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .country-code-select:focus { border-color: var(--gold); }
+  .country-code-select option { background: var(--navy-mid); color: var(--cream); padding: 8px; }
+  @media(max-width:600px){
+    .phone-input-row { grid-template-columns: 90px 1fr; gap: 0.4rem; }
+    .country-code-select { padding: 0.9rem 0.3rem; font-size: 0.85rem; }
+  }
+
+  /* SUBMIT BUTTON DISABLED */
+  .submit-btn:disabled {
+    opacity: 1; cursor: not-allowed;
+    background: rgba(201,168,76,0.2); color: rgba(248,244,237,0.4);
+    pointer-events: none;
+  }
+
+  /* SUCCESS SCREEN */
+  .success-screen {
+    display: none; text-align: center; padding: 3rem 1.5rem;
+    background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 8px; max-width: 600px; margin: 3rem auto 0;
+    animation: fadeUp 0.5s ease;
+  }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; color: var(--navy); margin: 0 auto 1.5rem;
+    animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  @keyframes successPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .success-title {
+    font-family:'Cormorant Garamond',serif; font-size: 2rem;
+    color: var(--white); margin-bottom: 0.6rem;
+  }
+  .success-title em { color: var(--gold); font-style: italic; }
+  .success-msg {
+    font-size: 0.95rem; color: var(--text-light);
+    line-height: 1.7; max-width: 400px; margin: 0 auto 1.5rem;
+  }
+  .success-info {
+    background: rgba(46,125,50,0.1); border: 1px solid rgba(46,125,50,0.3);
+    color: #81C784; padding: 0.7rem 1rem; border-radius: 6px;
+    font-size: 0.82rem; margin-bottom: 1.5rem; max-width: 420px;
+    margin-left: auto; margin-right: auto;
+  }
+  .reset-btn {
+    background: var(--gold); color: var(--navy);
+    padding: 0.9rem 2rem; border: none; border-radius: 4px;
+    font-family: 'Outfit', sans-serif; font-size: 0.85rem;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .reset-btn:hover { background: var(--gold-light); }
+
+  /* ERROR + SPINNER */
+  .error-msg {
+    background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.4);
+    color: #ff7e6b; padding: 0.7rem 1rem; border-radius: 4px;
+    font-size: 0.85rem; margin-bottom: 1rem;
+  }
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--navy); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle; margin-right: 0.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   @media(max-width:600px){ .info-boxes { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -35,7 +127,7 @@
 </div>
 
 <section style="background:var(--navy);">
-  <div class="flight-wrap">
+  <div class="flight-wrap" id="form-container">
     <div class="type-toggle">
       <button class="type-btn active" onclick="setType(this,'One Way')">One Way</button>
       <button class="type-btn" onclick="setType(this,'Round Trip')">Round Trip</button>
@@ -45,31 +137,62 @@
 
     <div class="form-grid">
       <div class="form-group">
-        <label>Full Name</label>
+        <label>Full Name *</label>
         <input type="text" placeholder="Passenger name" id="f-name">
       </div>
       <div class="form-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="+91 XXXXX XXXXX" id="f-phone">
+        <label>Phone Number *</label>
+        <div class="phone-input-row">
+          <select id="f-country-code" class="country-code-select">
+            <option value="">Code</option>
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+966">🇸🇦 +966</option>
+            <option value="+974">🇶🇦 +974</option>
+            <option value="+965">🇰🇼 +965</option>
+            <option value="+968">🇴🇲 +968</option>
+            <option value="+973">🇧🇭 +973</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+61">🇦🇺 +61</option>
+            <option value="+65">🇸🇬 +65</option>
+            <option value="+60">🇲🇾 +60</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+39">🇮🇹 +39</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+41">🇨🇭 +41</option>
+            <option value="+81">🇯🇵 +81</option>
+            <option value="+86">🇨🇳 +86</option>
+            <option value="+82">🇰🇷 +82</option>
+            <option value="+66">🇹🇭 +66</option>
+            <option value="+960">🇲🇻 +960</option>
+            <option value="+94">🇱🇰 +94</option>
+            <option value="+880">🇧🇩 +880</option>
+            <option value="+977">🇳🇵 +977</option>
+            <option value="other">🌍 Other</option>
+          </select>
+          <input type="tel" id="f-phone" placeholder="Enter your number">
+        </div>
       </div>
       <div class="form-group">
-        <label>Email</label>
+        <label>Email *</label>
         <input type="email" placeholder="your@email.com" id="f-email">
       </div>
       <div class="form-group">
-        <label>No. of Passengers</label>
+        <label>No. of Passengers *</label>
         <input type="number" placeholder="1" min="1" id="f-pax">
       </div>
       <div class="form-group">
-        <label>From (City / Airport)</label>
+        <label>From (City / Airport) *</label>
         <input type="text" placeholder="e.g. Kochi (COK)" id="f-from">
       </div>
       <div class="form-group">
-        <label>To (City / Airport)</label>
+        <label>To (City / Airport) *</label>
         <input type="text" placeholder="e.g. Agatti (AGX)" id="f-to">
       </div>
       <div class="form-group">
-        <label>Departure Date</label>
+        <label>Departure Date *</label>
         <input type="date" id="f-dep">
       </div>
       <div class="form-group" id="return-field">
@@ -87,7 +210,7 @@
       </div>
       <div class="form-group">
         <label>Preferred Airline</label>
-        <select>
+        <select id="f-airline">
           <option value="">No preference</option>
           <option>IndiGo</option>
           <option>Air India</option>
@@ -100,10 +223,20 @@
       </div>
       <div class="form-group full">
         <label>Special Requirements</label>
-        <textarea placeholder="Meal preference, wheelchair, extra baggage, infant seat..."></textarea>
+        <textarea placeholder="Meal preference, wheelchair, extra baggage, infant seat..." id="f-special"></textarea>
       </div>
-      <button class="submit-btn" onclick="handleSubmit(this,'Flight Request Sent!')">✈️ Send Flight Booking Request</button>
+      <div class="form-group full" id="error-display"></div>
+      <button class="submit-btn" id="flight-submit-btn" onclick="submitFlight()" disabled>✈️ Send Flight Booking Request</button>
     </div>
+  </div>
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Booking Request <em>Received!</em></div>
+    <div class="success-msg">Thank you for your flight booking enquiry. Our team will check availability and pricing, and get back to you within 24 hours.</div>
+    <div class="success-info">📧 Confirmation sent to our team. We'll contact you soon!</div>
+    <button class="reset-btn" onclick="resetFlight()">Send Another Request</button>
   </div>
 
   <div class="info-boxes">
@@ -128,17 +261,152 @@
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
 <script>
+  var WEB3FORMS_KEY = 'dbaa90d6-e37a-4c74-bcab-20a80ed87a9d';
+
   renderNav('Flights');
   renderFooter();
   initReveal();
 
   function setType(btn, type) {
-    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.type-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
     document.getElementById('trip-type').value = type;
     document.getElementById('return-field').style.opacity = type === 'One Way' ? '0.4' : '1';
+    validateFlightForm();
+  }
+
+  // Set minimum date to today
+  (function() {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0');
+    var todayStr = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('f-dep').setAttribute('min', todayStr);
+    document.getElementById('f-ret').setAttribute('min', todayStr);
+  })();
+
+  // Phone: only allow digits, spaces, dashes
+  document.getElementById('f-phone').addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d\s\-]/g, '');
+  });
+
+  // LIVE VALIDATION
+  function validateFlightForm() {
+    var name = document.getElementById('f-name').value.trim();
+    var code = document.getElementById('f-country-code').value;
+    var phone = document.getElementById('f-phone').value.trim();
+    var phoneDigits = phone.replace(/\D/g, '');
+    var email = document.getElementById('f-email').value.trim();
+    var pax = document.getElementById('f-pax').value;
+    var from = document.getElementById('f-from').value.trim();
+    var to = document.getElementById('f-to').value.trim();
+    var dep = document.getElementById('f-dep').value;
+    var emailValid = email.length > 0 && email.indexOf('@') > 0 && email.indexOf('.') > 0;
+
+    var ok = name.length >= 2 && code !== '' && phoneDigits.length >= 7
+      && emailValid && pax !== '' && parseInt(pax) >= 1
+      && from.length >= 2 && to.length >= 2 && dep !== '';
+
+    document.getElementById('flight-submit-btn').disabled = !ok;
+  }
+
+  // Attach listeners to all inputs
+  ['f-name','f-phone','f-email','f-pax','f-from','f-to','f-dep','f-ret','f-special'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', validateFlightForm);
+      el.addEventListener('change', validateFlightForm);
+    }
+  });
+  document.getElementById('f-country-code').addEventListener('change', validateFlightForm);
+
+  function submitFlight() {
+    var errorEl = document.getElementById('error-display');
+    errorEl.innerHTML = '';
+
+    var name = document.getElementById('f-name').value.trim();
+    var code = document.getElementById('f-country-code').value;
+    var phoneNum = document.getElementById('f-phone').value.trim();
+    var phone = (code === 'other' ? '' : code + ' ') + phoneNum;
+    var email = document.getElementById('f-email').value.trim();
+    var pax = document.getElementById('f-pax').value;
+    var from = document.getElementById('f-from').value.trim();
+    var to = document.getElementById('f-to').value.trim();
+    var dep = document.getElementById('f-dep').value;
+    var ret = document.getElementById('f-ret').value;
+    var tripType = document.getElementById('trip-type').value;
+    var travelClass = document.getElementById('f-class').value;
+    var airline = document.getElementById('f-airline').value || 'No preference';
+    var special = document.getElementById('f-special').value.trim() || 'None';
+
+    var btn = document.getElementById('flight-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Sending...';
+
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: 'New Flight Booking: ' + from + ' to ' + to + ' - ' + name,
+      from_name: 'ACOYA Flight Booking',
+      replyto: email,
+      'Customer Name': name,
+      'Phone Number': phone,
+      'Email Address': email,
+      'Trip Type': tripType,
+      'From': from,
+      'To': to,
+      'Departure Date': dep,
+      'Return Date': ret || 'N/A (one-way)',
+      'Number of Passengers': pax,
+      'Travel Class': travelClass,
+      'Preferred Airline': airline,
+      'Special Requirements': special,
+      'Submitted via': 'acoyatravels.com/flight'
+    };
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      if (data.success) {
+        document.getElementById('form-container').style.display = 'none';
+        document.getElementById('success-screen').classList.add('show');
+        window.scrollTo({ top: document.getElementById('success-screen').offsetTop - 100, behavior: 'smooth' });
+      } else {
+        showFlightError(data.message || 'Could not send. Please call us directly.');
+      }
+    })
+    .catch(function(err) {
+      showFlightError('Network error. Please check your connection or call us directly.');
+    });
+  }
+
+  function showFlightError(msg) {
+    var btn = document.getElementById('flight-submit-btn');
+    btn.disabled = false;
+    btn.innerHTML = '✈️ Send Flight Booking Request';
+    document.getElementById('error-display').innerHTML = '<div class="error-msg">⚠️ ' + msg + '<br><a href="tel:+919495768129" style="color:#ff7e6b;text-decoration:underline;">Call +91 94957 68129</a></div>';
+  }
+
+  function resetFlight() {
+    ['f-name','f-phone','f-email','f-pax','f-from','f-to','f-dep','f-ret','f-special'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('f-country-code').value = '';
+    document.getElementById('f-class').value = 'Economy';
+    document.getElementById('f-airline').value = '';
+    document.getElementById('error-display').innerHTML = '';
+    var btn = document.getElementById('flight-submit-btn');
+    btn.innerHTML = '✈️ Send Flight Booking Request';
+    btn.disabled = true;
+    document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('form-container').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('form-container').offsetTop - 100, behavior: 'smooth' });
   }
 </script>
-<a href="https://wa.me/919495768129" target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;" title="Chat on WhatsApp">💬</a>
 </body>
 </html>

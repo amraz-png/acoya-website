@@ -626,27 +626,29 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Sending...';
 
-    var formData = new FormData();
-    formData.append('access_key', WEB3FORMS_KEY);
-    formData.append('subject', '🌴 New Enquiry: ' + state.destination + ' — ' + state.name);
-    formData.append('from_name', 'ACOYA Website Enquiry');
-    // Reply-to: customer's email so Amraz can hit "Reply" directly
-    formData.append('replyto', state.email);
-
-    // Web3Forms shows fields by label in default template.
-    // Use clear, ordered field names so the email looks structured.
-    formData.append('👤 Customer Name', state.name);
-    formData.append('📞 Phone Number', state.phone);
-    formData.append('📧 Email Address', state.email);
-    formData.append('📍 Destination', state.destination);
-    formData.append('📅 Travel Date', state.date || 'Not specified');
-    formData.append('👥 Number of Travelers', state.travelers || 'Not specified');
-    formData.append('💬 Message', state.message);
-    formData.append('🌐 Submitted via', 'acoyatravels.com');
+    // Use JSON submission for proper UTF-8 character handling
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: 'New Enquiry: ' + state.destination + ' - ' + state.name,
+      from_name: 'ACOYA Website Enquiry',
+      replyto: state.email,
+      'Customer Name': state.name,
+      'Phone Number': state.phone,
+      'Email Address': state.email,
+      'Destination': state.destination,
+      'Travel Date': state.date || 'Not specified',
+      'Number of Travelers': state.travelers || 'Not specified',
+      'Message': state.message,
+      'Submitted via': 'acoyatravels.com'
+    };
 
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      body: formData
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
     })
     .then(function(response) { return response.json(); })
     .then(function(data) {
