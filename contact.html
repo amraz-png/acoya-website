@@ -487,6 +487,58 @@
     document.getElementById('c-date').setAttribute('min', yyyy + '-' + mm + '-' + dd);
   })();
 
+  // COUNTRY-SPECIFIC PHONE DIGIT MAP
+  // Each country has specific required digit count (without country code)
+  var COUNTRY_DIGITS = {
+    '+91':  { min: 10, max: 10, label: '10-digit' },   // India
+    '+1':   { min: 10, max: 10, label: '10-digit' },   // USA/Canada
+    '+44':  { min: 10, max: 10, label: '10-digit' },   // UK
+    '+971': { min: 9,  max: 9,  label: '9-digit'  },   // UAE
+    '+966': { min: 9,  max: 9,  label: '9-digit'  },   // Saudi
+    '+974': { min: 8,  max: 8,  label: '8-digit'  },   // Qatar
+    '+965': { min: 8,  max: 8,  label: '8-digit'  },   // Kuwait
+    '+968': { min: 8,  max: 8,  label: '8-digit'  },   // Oman
+    '+973': { min: 8,  max: 8,  label: '8-digit'  },   // Bahrain
+    '+61':  { min: 9,  max: 9,  label: '9-digit'  },   // Australia
+    '+65':  { min: 8,  max: 8,  label: '8-digit'  },   // Singapore
+    '+60':  { min: 9,  max: 10, label: '9 or 10-digit' }, // Malaysia
+    '+49':  { min: 10, max: 11, label: '10 or 11-digit' }, // Germany
+    '+33':  { min: 9,  max: 9,  label: '9-digit'  },   // France
+    '+39':  { min: 9,  max: 10, label: '9 or 10-digit' }, // Italy
+    '+34':  { min: 9,  max: 9,  label: '9-digit'  },   // Spain
+    '+41':  { min: 9,  max: 9,  label: '9-digit'  },   // Switzerland
+    '+81':  { min: 10, max: 10, label: '10-digit' },   // Japan
+    '+86':  { min: 11, max: 11, label: '11-digit' },   // China
+    '+82':  { min: 9,  max: 10, label: '9 or 10-digit' }, // Korea
+    '+66':  { min: 9,  max: 9,  label: '9-digit'  },   // Thailand
+    '+960': { min: 7,  max: 7,  label: '7-digit'  },   // Maldives
+    '+94':  { min: 9,  max: 9,  label: '9-digit'  },   // Sri Lanka
+    '+880': { min: 10, max: 10, label: '10-digit' },   // Bangladesh
+    '+977': { min: 10, max: 10, label: '10-digit' },   // Nepal
+    'other':{ min: 7,  max: 15, label: 'valid' }       // Other countries
+  };
+
+  // Get phone validation rule for selected country code
+  function getPhoneRule(code) {
+    return COUNTRY_DIGITS[code] || null;
+  }
+
+  // Update placeholder hint based on selected country
+  function updatePhonePlaceholder() {
+    var code = document.getElementById('c-country-code').value;
+    var phoneEl = document.getElementById('c-phone');
+    if (!code) {
+      phoneEl.placeholder = 'Enter your number';
+    } else if (code === 'other') {
+      phoneEl.placeholder = 'Enter your number (min 7 digits)';
+    } else {
+      var rule = getPhoneRule(code);
+      if (rule) {
+        phoneEl.placeholder = 'Enter ' + rule.label + ' number';
+      }
+    }
+  }
+
   function validateStep3() {
     var name = document.getElementById('c-name').value.trim();
     var countryCode = document.getElementById('c-country-code').value;
@@ -494,8 +546,18 @@
     var email = document.getElementById('c-email').value.trim();
     var phoneDigits = phone.replace(/\D/g, '');
     var emailValid = email.length > 0 && email.indexOf('@') > 0 && email.indexOf('.') > 0;
-    // Need: name + country code selected + phone has 7+ digits + valid email
-    var ok = name.length >= 2 && countryCode !== '' && phoneDigits.length >= 7 && emailValid;
+
+    // Country-specific phone validation
+    var phoneOk = false;
+    if (countryCode && phoneDigits.length > 0) {
+      var rule = getPhoneRule(countryCode);
+      if (rule) {
+        phoneOk = phoneDigits.length >= rule.min && phoneDigits.length <= rule.max;
+      }
+    }
+
+    // Need: name + country code selected + correct phone digits + valid email
+    var ok = name.length >= 2 && countryCode !== '' && phoneOk && emailValid;
     document.getElementById('step3-next-btn').disabled = !ok;
   }
 
@@ -511,7 +573,10 @@
       el.addEventListener('blur', validateStep3);
     }
   });
-  document.getElementById('c-country-code').addEventListener('change', validateStep3);
+  document.getElementById('c-country-code').addEventListener('change', function() {
+    updatePhonePlaceholder();
+    validateStep3();
+  });
   document.getElementById('c-message').addEventListener('input', validateStep4);
   document.getElementById('c-date').addEventListener('change', validateStep2);
   document.getElementById('c-date').addEventListener('input', validateStep2);
@@ -579,10 +644,19 @@
         document.getElementById('c-country-code').style.borderColor = '';
       }
 
-      // Validate phone number
+      // Validate phone number (country-specific digit count)
       var phoneDigits = phoneNum.replace(/\D/g, '');
-      if (!phoneNum || phoneDigits.length < 7) {
-        missing.push('Valid phone number');
+      var phoneRule = getPhoneRule(countryCode);
+      var phoneOk = false;
+      if (countryCode && phoneRule && phoneDigits.length > 0) {
+        phoneOk = phoneDigits.length >= phoneRule.min && phoneDigits.length <= phoneRule.max;
+      }
+      if (!phoneOk) {
+        var msg = 'Valid phone number';
+        if (phoneRule && countryCode !== 'other') {
+          msg = 'Valid ' + phoneRule.label + ' phone number for ' + countryCode;
+        }
+        missing.push(msg);
         document.getElementById('c-phone').style.borderColor = '#e74c3c';
       } else document.getElementById('c-phone').style.borderColor = '';
 
