@@ -119,6 +119,32 @@
   .option-label { font-size: 0.83rem; color: var(--cream); font-weight: 500; }
   .option-tile.selected .option-label { color: var(--gold); font-weight: 600; }
 
+  /* PHONE WITH COUNTRY CODE */
+  .phone-input-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0.5rem;
+  }
+  .country-code-select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    padding: 0.9rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .country-code-select:focus { border-color: var(--gold); }
+  .country-code-select option { background: var(--navy-mid); color: var(--cream); padding: 8px; }
+
+  @media(max-width:600px){
+    .phone-input-row { grid-template-columns: 110px 1fr; }
+    .country-code-select { padding: 0.9rem 0.3rem; font-size: 0.78rem; }
+  }
+
   /* FORM FIELDS */
   .field-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
@@ -142,6 +168,11 @@
     font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
     cursor: pointer; transition: all 0.3s;
   }
+  .step-nav button:disabled {
+    opacity: 1; cursor: not-allowed;
+    background: rgba(201,168,76,0.2); color: rgba(248,244,237,0.4);
+    pointer-events: none;
+  }
   .btn-back {
     background: transparent; border: 1px solid rgba(201,168,76,0.3);
     color: var(--text-light);
@@ -150,19 +181,57 @@
   .btn-next {
     background: var(--gold); border: none; color: var(--navy);
   }
-  .btn-next:hover { background: var(--gold-light); }
+  .btn-next:hover:not(:disabled) { background: var(--gold-light); }
 
   /* SUCCESS */
   .success-box {
-    text-align: center; padding: 2rem 1rem;
+    text-align: center; padding: 2.5rem 1rem;
     animation: fadeUp 0.5s ease;
   }
   .success-icon {
-    width: 70px; height: 70px; border-radius: 50%;
+    width: 80px; height: 80px; border-radius: 50%;
     background: linear-gradient(135deg, var(--gold-dark), var(--gold));
     display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; color: var(--navy); margin: 0 auto 1.2rem;
+    font-size: 2.5rem; color: var(--navy); margin: 0 auto 1.5rem;
+    animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
+  @keyframes successPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .success-title {
+    font-family:'Cormorant Garamond',serif; font-size: 2rem;
+    color: var(--white); margin-bottom: 0.6rem;
+  }
+  .success-title em { color: var(--gold); font-style: italic; }
+  .success-msg {
+    font-size: 0.95rem; color: var(--text-light);
+    line-height: 1.7; max-width: 380px; margin: 0 auto 1.5rem;
+  }
+  .success-info {
+    background: rgba(46,125,50,0.1); border: 1px solid rgba(46,125,50,0.3);
+    color: #81C784; padding: 0.7rem 1rem; border-radius: 6px;
+    font-size: 0.82rem; margin-bottom: 1.5rem; max-width: 400px;
+    margin-left: auto; margin-right: auto;
+  }
+
+  /* ERROR */
+  .error-msg {
+    background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.4);
+    color: #ff7e6b; padding: 0.7rem 1rem; border-radius: 4px;
+    font-size: 0.85rem; margin-bottom: 1rem;
+  }
+
+  /* SPINNER */
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--navy); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle; margin-right: 0.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   @media(max-width:900px){
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -311,7 +380,38 @@
         <div class="field-row">
           <div class="field-group">
             <label>Phone *</label>
-            <input type="tel" id="c-phone" placeholder="+91 XXXXX XXXXX">
+            <div class="phone-input-row">
+              <select id="c-country-code" class="country-code-select">
+                <option value="">Code</option>
+                <option value="+91">🇮🇳 +91 (India)</option>
+                <option value="+971">🇦🇪 +971 (UAE)</option>
+                <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
+                <option value="+974">🇶🇦 +974 (Qatar)</option>
+                <option value="+965">🇰🇼 +965 (Kuwait)</option>
+                <option value="+968">🇴🇲 +968 (Oman)</option>
+                <option value="+973">🇧🇭 +973 (Bahrain)</option>
+                <option value="+1">🇺🇸 +1 (USA/Canada)</option>
+                <option value="+44">🇬🇧 +44 (UK)</option>
+                <option value="+61">🇦🇺 +61 (Australia)</option>
+                <option value="+65">🇸🇬 +65 (Singapore)</option>
+                <option value="+60">🇲🇾 +60 (Malaysia)</option>
+                <option value="+49">🇩🇪 +49 (Germany)</option>
+                <option value="+33">🇫🇷 +33 (France)</option>
+                <option value="+39">🇮🇹 +39 (Italy)</option>
+                <option value="+34">🇪🇸 +34 (Spain)</option>
+                <option value="+41">🇨🇭 +41 (Switzerland)</option>
+                <option value="+81">🇯🇵 +81 (Japan)</option>
+                <option value="+86">🇨🇳 +86 (China)</option>
+                <option value="+82">🇰🇷 +82 (S. Korea)</option>
+                <option value="+66">🇹🇭 +66 (Thailand)</option>
+                <option value="+960">🇲🇻 +960 (Maldives)</option>
+                <option value="+94">🇱🇰 +94 (Sri Lanka)</option>
+                <option value="+880">🇧🇩 +880 (Bangladesh)</option>
+                <option value="+977">🇳🇵 +977 (Nepal)</option>
+                <option value="other">🌍 Other</option>
+              </select>
+              <input type="tel" id="c-phone" placeholder="Enter your number">
+            </div>
           </div>
           <div class="field-group">
             <label>Email *</label>
@@ -320,7 +420,7 @@
         </div>
         <div class="step-nav">
           <button class="btn-back" onclick="prevStep(3)">← Back</button>
-          <button class="btn-next" onclick="nextStep(3)">Next →</button>
+          <button class="btn-next" id="step3-next-btn" onclick="nextStep(3)" disabled>Next →</button>
         </div>
       </div>
 
@@ -332,9 +432,10 @@
           <label>Your Message *</label>
           <textarea id="c-message" placeholder="E.g., Honeymoon trip, prefer beach resort, budget around ₹50,000 per person..." style="min-height:140px;"></textarea>
         </div>
+        <div id="error-display"></div>
         <div class="step-nav">
           <button class="btn-back" onclick="prevStep(4)">← Back</button>
-          <button class="btn-next" id="submit-btn" onclick="submitForm()">Send Message</button>
+          <button class="btn-next" id="submit-btn" onclick="submitForm()" disabled>Send Message</button>
         </div>
       </div>
 
@@ -342,9 +443,10 @@
       <div class="form-step" id="step-success">
         <div class="success-box">
           <div class="success-icon">✓</div>
-          <div class="step-heading" style="font-size:1.6rem;">Opening WhatsApp...</div>
-          <div class="step-sub">Your enquiry is ready! We'll respond within a few hours.</div>
-          <button class="btn-next" style="max-width:200px;margin:1rem auto 0;" onclick="resetForm()">Send Another</button>
+          <div class="success-title">Message <em>Received!</em></div>
+          <div class="success-msg">Thank you for reaching out to ACOYA Tours & Travels. We've received your enquiry and our team will get back to you within a few hours.</div>
+          <div class="success-info">📧 A confirmation has been sent to our team. We'll contact you soon!</div>
+          <button class="btn-next" style="max-width:220px;margin:0 auto;" onclick="resetForm()">Send Another Message</button>
         </div>
       </div>
 
@@ -355,17 +457,24 @@
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
 <script>
-  var state = {
-    destination: '',
-    date: '',
-    travelers: '',
-    name: '',
-    phone: '',
-    email: '',
-    message: ''
+  var WEB3FORMS_KEY = 'dbaa90d6-e37a-4c74-bcab-20a80ed87a9d';
+
+  var DESTINATION_EMOJI = {
+    'Lakshadweep Tour Package': '🏝️',
+    'Maldives': '🌊',
+    'Dubai': '🕌',
+    'Kerala': '🌴',
+    'Singapore': '🌆',
+    'Thailand': '🐘',
+    'Europe': '🏛️',
+    'Other / Custom Trip': '✨'
   };
 
-  // Destination tile selection
+  var state = {
+    destination: '', date: '', travelers: '',
+    name: '', phone: '', email: '', message: ''
+  };
+
   document.querySelectorAll('#dest-tiles .option-tile').forEach(function(tile) {
     tile.addEventListener('click', function() {
       document.querySelectorAll('#dest-tiles .option-tile').forEach(function(t) { t.classList.remove('selected'); });
@@ -374,51 +483,217 @@
     });
   });
 
+  // LIVE VALIDATION — enable/disable Next & Send buttons as user types
+  function validateStep3() {
+    var name = document.getElementById('c-name').value.trim();
+    var countryCode = document.getElementById('c-country-code').value;
+    var phone = document.getElementById('c-phone').value.trim();
+    var email = document.getElementById('c-email').value.trim();
+    var phoneDigits = phone.replace(/\D/g, '');
+    var emailValid = email.length > 0 && email.indexOf('@') > 0 && email.indexOf('.') > 0;
+    // Need: name + country code selected + phone has 7+ digits + valid email
+    var ok = name.length >= 2 && countryCode !== '' && phoneDigits.length >= 7 && emailValid;
+    document.getElementById('step3-next-btn').disabled = !ok;
+  }
+
+  function validateStep4() {
+    var msg = document.getElementById('c-message').value.trim();
+    document.getElementById('submit-btn').disabled = msg.length < 3;
+  }
+
+  ['c-name', 'c-phone', 'c-email'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', validateStep3);
+      el.addEventListener('blur', validateStep3);
+    }
+  });
+  document.getElementById('c-country-code').addEventListener('change', validateStep3);
+  document.getElementById('c-message').addEventListener('input', validateStep4);
+
+  // Phone field: only allow digits, spaces, and dashes
+  var phoneEl = document.getElementById('c-phone');
+  phoneEl.addEventListener('input', function() {
+    // Strip anything that isn't digit/space/dash
+    this.value = this.value.replace(/[^\d\s\-]/g, '');
+  });
+
   function setStep(n) {
     document.querySelectorAll('.form-step').forEach(function(s) { s.classList.remove('active'); });
     var stepEl = document.getElementById('step-' + n);
     if (stepEl) stepEl.classList.add('active');
 
-    document.getElementById('progress-wrap').setAttribute('data-step', n);
-    document.querySelectorAll('.progress-step').forEach(function(p) {
-      var s = parseInt(p.dataset.s);
-      p.classList.remove('active', 'done');
-      if (s === n) p.classList.add('active');
-      else if (s < n) p.classList.add('done');
-    });
+    var pw = document.getElementById('progress-wrap');
+    if (typeof n === 'number') {
+      pw.setAttribute('data-step', n);
+      document.querySelectorAll('.progress-step').forEach(function(p) {
+        var s = parseInt(p.dataset.s);
+        p.classList.remove('active', 'done');
+        if (s === n) p.classList.add('active');
+        else if (s < n) p.classList.add('done');
+      });
+    } else {
+      pw.setAttribute('data-step', '4');
+      document.querySelectorAll('.progress-step').forEach(function(p) {
+        p.classList.remove('active');
+        p.classList.add('done');
+      });
+    }
   }
 
   function nextStep(current) {
     if (current === 1) {
-      if (!state.destination) {
-        alert('Please select a destination first.');
-        return;
-      }
+      if (!state.destination) { alert('Please select a destination first.'); return; }
     } else if (current === 3) {
       var name = document.getElementById('c-name').value.trim();
-      var phone = document.getElementById('c-phone').value.trim();
+      var countryCode = document.getElementById('c-country-code').value;
+      var phoneNum = document.getElementById('c-phone').value.trim();
       var email = document.getElementById('c-email').value.trim();
       var missing = [];
-      if (!name) { missing.push('Name'); document.getElementById('c-name').style.borderColor = '#e74c3c'; }
-      else document.getElementById('c-name').style.borderColor = '';
-      if (!phone) { missing.push('Phone'); document.getElementById('c-phone').style.borderColor = '#e74c3c'; }
-      else document.getElementById('c-phone').style.borderColor = '';
-      if (!email) { missing.push('Email'); document.getElementById('c-email').style.borderColor = '#e74c3c'; }
-      else document.getElementById('c-email').style.borderColor = '';
-      if (missing.length) { alert('Please fill: ' + missing.join(', ')); return; }
-      state.name = name; state.phone = phone; state.email = email;
+
+      if (!name) {
+        missing.push('Name');
+        document.getElementById('c-name').style.borderColor = '#e74c3c';
+      } else document.getElementById('c-name').style.borderColor = '';
+
+      // Validate country code FIRST
+      if (!countryCode) {
+        missing.push('Country code (please select from dropdown)');
+        document.getElementById('c-country-code').style.borderColor = '#e74c3c';
+      } else {
+        document.getElementById('c-country-code').style.borderColor = '';
+      }
+
+      // Validate phone number
+      var phoneDigits = phoneNum.replace(/\D/g, '');
+      if (!phoneNum || phoneDigits.length < 7) {
+        missing.push('Valid phone number');
+        document.getElementById('c-phone').style.borderColor = '#e74c3c';
+      } else document.getElementById('c-phone').style.borderColor = '';
+
+      // Validate email
+      if (!email || email.indexOf('@') < 0 || email.indexOf('.') < 0) {
+        missing.push('Valid Email');
+        document.getElementById('c-email').style.borderColor = '#e74c3c';
+      } else document.getElementById('c-email').style.borderColor = '';
+
+      if (missing.length) {
+        alert('⚠️ Please fix:\n• ' + missing.join('\n• '));
+        return;
+      }
+
+      state.name = name;
+      state.phone = (countryCode === 'other' ? '' : countryCode + ' ') + phoneNum;
+      state.email = email;
     }
     setStep(current + 1);
   }
 
-  function prevStep(current) {
-    setStep(current - 1);
+  function prevStep(current) { setStep(current - 1); }
+
+  // Generate premium HTML email
+  function buildPremiumEmail() {
+    var destEmoji = DESTINATION_EMOJI[state.destination] || '📍';
+    var phoneDigits = state.phone.replace(/\D/g, '');
+    var waNumber = phoneDigits;
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    var timeStr = now.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+    var travelDateFormatted = state.date ? new Date(state.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Not specified';
+
+    // Escape user input to prevent HTML injection in email
+    function esc(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>New Enquiry</title></head>'
+      + '<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">'
+      + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">'
+      + '<tr><td align="center">'
+      + '<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">'
+
+      // HEADER (Navy + Gold)
+      + '<tr><td style="background:linear-gradient(135deg,#0A1628 0%,#112240 100%);padding:35px 30px;text-align:center;border-bottom:3px solid #C9A84C;">'
+      + '<div style="font-family:Georgia,serif;font-size:28px;color:#C9A84C;letter-spacing:3px;font-weight:600;margin-bottom:6px;">ACOYA</div>'
+      + '<div style="font-size:11px;color:#B8C5D6;letter-spacing:4px;text-transform:uppercase;">Tours &amp; Travels</div>'
+      + '<div style="margin-top:18px;padding:8px 16px;background:rgba(201,168,76,0.15);border:1px solid #C9A84C;border-radius:30px;display:inline-block;color:#C9A84C;font-size:12px;font-weight:bold;letter-spacing:2px;">🌴 NEW ENQUIRY RECEIVED</div>'
+      + '</td></tr>'
+
+      // GREETING
+      + '<tr><td style="padding:30px 30px 15px;">'
+      + '<div style="font-family:Georgia,serif;font-size:22px;color:#0A1628;margin-bottom:8px;">A new traveler is interested!</div>'
+      + '<div style="font-size:14px;color:#666;line-height:1.6;">A new enquiry has been received through the ACOYA website. Please respond to the customer soon.</div>'
+      + '</td></tr>'
+
+      // CUSTOMER DETAILS
+      + '<tr><td style="padding:10px 30px;">'
+      + '<div style="background:#FAF7F0;border-left:4px solid #C9A84C;padding:20px;border-radius:4px;">'
+      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;">👤 CUSTOMER DETAILS</div>'
+      + '<table width="100%" cellpadding="6" cellspacing="0">'
+      + '<tr><td width="100" style="font-size:13px;color:#666;font-weight:600;">Name:</td><td style="font-size:15px;color:#0A1628;font-weight:600;">' + esc(state.name) + '</td></tr>'
+      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Phone:</td><td style="font-size:15px;color:#0A1628;"><a href="tel:' + esc(state.phone) + '" style="color:#0A1628;text-decoration:none;font-weight:600;">' + esc(state.phone) + '</a></td></tr>'
+      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Email:</td><td style="font-size:15px;color:#0A1628;"><a href="mailto:' + esc(state.email) + '" style="color:#0A1628;text-decoration:none;font-weight:600;">' + esc(state.email) + '</a></td></tr>'
+      + '</table>'
+      + '</div>'
+      + '</td></tr>'
+
+      // TRIP DETAILS
+      + '<tr><td style="padding:10px 30px;">'
+      + '<div style="background:#FAF7F0;border-left:4px solid #C9A84C;padding:20px;border-radius:4px;">'
+      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;">📍 TRIP DETAILS</div>'
+      + '<table width="100%" cellpadding="6" cellspacing="0">'
+      + '<tr><td width="100" style="font-size:13px;color:#666;font-weight:600;">Destination:</td><td style="font-size:16px;color:#0A1628;font-weight:600;">' + destEmoji + ' ' + esc(state.destination) + '</td></tr>'
+      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Travel Date:</td><td style="font-size:15px;color:#0A1628;">📅 ' + esc(travelDateFormatted) + '</td></tr>'
+      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Travelers:</td><td style="font-size:15px;color:#0A1628;">👥 ' + esc(state.travelers || 'Not specified') + '</td></tr>'
+      + '</table>'
+      + '</div>'
+      + '</td></tr>'
+
+      // MESSAGE
+      + '<tr><td style="padding:10px 30px;">'
+      + '<div style="background:#FAF7F0;border-left:4px solid #C9A84C;padding:20px;border-radius:4px;">'
+      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;">💬 CUSTOMER MESSAGE</div>'
+      + '<div style="font-size:14px;color:#0A1628;line-height:1.7;font-style:italic;background:#fff;padding:14px;border-radius:4px;border:1px solid #EDE5D5;">' + esc(state.message).replace(/\n/g, '<br>') + '</div>'
+      + '</div>'
+      + '</td></tr>'
+
+      // QUICK ACTIONS BUTTONS
+      + '<tr><td style="padding:25px 30px 10px;">'
+      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;text-align:center;">⚡ QUICK ACTIONS</div>'
+      + '<table width="100%" cellpadding="0" cellspacing="0">'
+      + '<tr>'
+      + '<td width="33%" style="padding:0 4px;"><a href="tel:' + esc(state.phone) + '" style="display:block;background:#0A1628;color:#C9A84C;text-decoration:none;text-align:center;padding:14px 8px;border-radius:6px;font-weight:bold;font-size:13px;letter-spacing:1px;border:1px solid #C9A84C;">📞 CALL</a></td>'
+      + '<td width="33%" style="padding:0 4px;"><a href="https://wa.me/' + waNumber + '" style="display:block;background:#25D366;color:#ffffff;text-decoration:none;text-align:center;padding:14px 8px;border-radius:6px;font-weight:bold;font-size:13px;letter-spacing:1px;">💬 WHATSAPP</a></td>'
+      + '<td width="33%" style="padding:0 4px;"><a href="mailto:' + esc(state.email) + '?subject=Re%3A%20Your%20ACOYA%20Enquiry%20-%20' + encodeURIComponent(state.destination) + '" style="display:block;background:#C9A84C;color:#0A1628;text-decoration:none;text-align:center;padding:14px 8px;border-radius:6px;font-weight:bold;font-size:13px;letter-spacing:1px;">📧 REPLY</a></td>'
+      + '</tr>'
+      + '</table>'
+      + '</td></tr>'
+
+      // TIMESTAMP
+      + '<tr><td style="padding:25px 30px 10px;text-align:center;">'
+      + '<div style="font-size:12px;color:#999;">📅 Received on ' + dateStr + ' at ' + timeStr + '</div>'
+      + '</td></tr>'
+
+      // FOOTER
+      + '<tr><td style="background:#0A1628;padding:20px 30px;text-align:center;border-top:1px solid #C9A84C;">'
+      + '<div style="font-family:Georgia,serif;font-size:16px;color:#C9A84C;letter-spacing:2px;margin-bottom:6px;">ACOYA Tours &amp; Travels</div>'
+      + '<div style="font-size:11px;color:#B8C5D6;line-height:1.6;">Agatti Island, Lakshadweep · India<br>'
+      + '<a href="https://acoyatravels.com" style="color:#C9A84C;text-decoration:none;">acoyatravels.com</a></div>'
+      + '<div style="font-size:10px;color:#666;margin-top:14px;letter-spacing:1px;">This enquiry was submitted through the ACOYA website contact form.</div>'
+      + '</td></tr>'
+
+      + '</table>'
+      + '</td></tr></table>'
+      + '</body></html>';
   }
 
   function submitForm() {
     var msg = document.getElementById('c-message').value.trim();
+    var errorEl = document.getElementById('error-display');
+    errorEl.innerHTML = '';
+
     if (!msg) {
-      alert('Please write your message.');
+      errorEl.innerHTML = '<div class="error-msg">⚠️ Please write your message.</div>';
       document.getElementById('c-message').style.borderColor = '#e74c3c';
       return;
     }
@@ -428,18 +703,44 @@
     state.date = document.getElementById('c-date').value;
     state.travelers = document.getElementById('c-travelers').value;
 
-    var text = '*New Enquiry from ACOYA Website*%0A%0A'
-      + '*Name:* ' + state.name + '%0A'
-      + '*Phone:* ' + state.phone + '%0A'
-      + '*Email:* ' + state.email + '%0A'
-      + '*Interested In:* ' + state.destination + '%0A'
-      + (state.date ? '*Travel Date:* ' + state.date + '%0A' : '')
-      + (state.travelers ? '*Travelers:* ' + state.travelers + '%0A' : '')
-      + '*Message:* ' + state.message;
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Sending...';
 
-    window.open('https://wa.me/919495768129?text=' + text, '_blank');
+    var formData = new FormData();
+    formData.append('access_key', WEB3FORMS_KEY);
+    formData.append('subject', '🌴 New Enquiry: ' + state.destination + ' — ' + state.name);
+    formData.append('from_name', 'ACOYA Website');
+    // Premium HTML body
+    formData.append('html', buildPremiumEmail());
+    // Plain-text fallback fields (visible in Web3Forms dashboard)
+    formData.append('Customer_Name', state.name);
+    formData.append('Phone', state.phone);
+    formData.append('Email', state.email);
+    formData.append('Destination', state.destination);
+    formData.append('Travel_Date', state.date || 'Not specified');
+    formData.append('Travelers', state.travelers || 'Not specified');
+    formData.append('Message', state.message);
 
-    setStep('success');
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      if (data.success) { setStep('success'); }
+      else { showError(data.message || 'Could not send. Please call us directly.'); }
+    })
+    .catch(function(err) {
+      showError('Network error. Please check your connection or call us directly.');
+    });
+  }
+
+  function showError(msg) {
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = false;
+    btn.innerHTML = 'Send Message';
+    document.getElementById('error-display').innerHTML = '<div class="error-msg">⚠️ ' + msg + '<br><a href="tel:+919495768129" style="color:#ff7e6b;text-decoration:underline;">Call +91 94957 68129</a></div>';
   }
 
   function resetForm() {
@@ -449,6 +750,14 @@
       var el = document.getElementById(id);
       if (el) { el.value = ''; el.style.borderColor = ''; }
     });
+    document.getElementById('c-country-code').value = '';
+    document.getElementById('c-country-code').style.borderColor = '';
+    document.getElementById('error-display').innerHTML = '';
+    var btn = document.getElementById('submit-btn');
+    btn.innerHTML = 'Send Message';
+    // Re-disable buttons until inputs are filled again
+    document.getElementById('step3-next-btn').disabled = true;
+    btn.disabled = true;
     setStep(1);
   }
 
@@ -461,7 +770,6 @@
   renderFooter();
   initReveal();
 
-  // Pre-fill destination if redirected from packages page
   window.addEventListener('load', function() {
     var params = new URLSearchParams(window.location.search);
     var pkg = params.get('pkg');
@@ -470,12 +778,11 @@
       document.getElementById('pkg-highlight-text').textContent = '📦 Enquiring about: ' + pkg;
       el.classList.add('visible');
 
-      // Auto-select Lakshadweep tile if package is an island
       var lakshadweepIslands = ['Agatti', 'Kavaratti', 'Bangaram', 'Minicoy', 'Kalpeni', 'Kadmat', 'Lakshadweep'];
-      var isLakshadweep = lakshadweepIslands.some(function(i) { return pkg.includes(i); });
+      var isLakshadweep = lakshadweepIslands.some(function(i) { return pkg.indexOf(i) >= 0; });
       if (isLakshadweep) {
         var tile = document.querySelector('#dest-tiles .option-tile[data-val="Lakshadweep Tour Package"]');
-        if (tile) { tile.click(); }
+        if (tile) tile.click();
       }
     }
   });
