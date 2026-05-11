@@ -122,8 +122,8 @@
   /* PHONE WITH COUNTRY CODE */
   .phone-input-row {
     display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 0.5rem;
+    grid-template-columns: 100px 1fr;
+    gap: 0.6rem;
   }
   .country-code-select {
     background: rgba(255,255,255,0.04);
@@ -141,8 +141,8 @@
   .country-code-select option { background: var(--navy-mid); color: var(--cream); padding: 8px; }
 
   @media(max-width:600px){
-    .phone-input-row { grid-template-columns: 110px 1fr; }
-    .country-code-select { padding: 0.9rem 0.3rem; font-size: 0.78rem; }
+    .phone-input-row { grid-template-columns: 90px 1fr; gap: 0.4rem; }
+    .country-code-select { padding: 0.9rem 0.3rem; font-size: 0.85rem; }
   }
 
   /* FORM FIELDS */
@@ -355,17 +355,17 @@
         <div class="step-sub">Approximate date and group size — flexible is fine</div>
         <div class="field-row">
           <div class="field-group">
-            <label>Travel Date</label>
+            <label>Travel Date *</label>
             <input type="date" id="c-date">
           </div>
           <div class="field-group">
-            <label>No. of Travelers</label>
+            <label>No. of Travelers *</label>
             <input type="number" id="c-travelers" placeholder="2" min="1">
           </div>
         </div>
         <div class="step-nav">
           <button class="btn-back" onclick="prevStep(2)">← Back</button>
-          <button class="btn-next" onclick="nextStep(2)">Next →</button>
+          <button class="btn-next" id="step2-next-btn" onclick="nextStep(2)" disabled>Next →</button>
         </div>
       </div>
 
@@ -377,46 +377,44 @@
           <label>Full Name *</label>
           <input type="text" id="c-name" placeholder="Your name">
         </div>
-        <div class="field-row">
-          <div class="field-group">
-            <label>Phone *</label>
-            <div class="phone-input-row">
-              <select id="c-country-code" class="country-code-select">
-                <option value="">Code</option>
-                <option value="+91">🇮🇳 +91 (India)</option>
-                <option value="+971">🇦🇪 +971 (UAE)</option>
-                <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
-                <option value="+974">🇶🇦 +974 (Qatar)</option>
-                <option value="+965">🇰🇼 +965 (Kuwait)</option>
-                <option value="+968">🇴🇲 +968 (Oman)</option>
-                <option value="+973">🇧🇭 +973 (Bahrain)</option>
-                <option value="+1">🇺🇸 +1 (USA/Canada)</option>
-                <option value="+44">🇬🇧 +44 (UK)</option>
-                <option value="+61">🇦🇺 +61 (Australia)</option>
-                <option value="+65">🇸🇬 +65 (Singapore)</option>
-                <option value="+60">🇲🇾 +60 (Malaysia)</option>
-                <option value="+49">🇩🇪 +49 (Germany)</option>
-                <option value="+33">🇫🇷 +33 (France)</option>
-                <option value="+39">🇮🇹 +39 (Italy)</option>
-                <option value="+34">🇪🇸 +34 (Spain)</option>
-                <option value="+41">🇨🇭 +41 (Switzerland)</option>
-                <option value="+81">🇯🇵 +81 (Japan)</option>
-                <option value="+86">🇨🇳 +86 (China)</option>
-                <option value="+82">🇰🇷 +82 (S. Korea)</option>
-                <option value="+66">🇹🇭 +66 (Thailand)</option>
-                <option value="+960">🇲🇻 +960 (Maldives)</option>
-                <option value="+94">🇱🇰 +94 (Sri Lanka)</option>
-                <option value="+880">🇧🇩 +880 (Bangladesh)</option>
-                <option value="+977">🇳🇵 +977 (Nepal)</option>
-                <option value="other">🌍 Other</option>
-              </select>
-              <input type="tel" id="c-phone" placeholder="Enter your number">
-            </div>
+        <div class="field-group">
+          <label>Phone *</label>
+          <div class="phone-input-row">
+            <select id="c-country-code" class="country-code-select">
+              <option value="">Code</option>
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+974">🇶🇦 +974</option>
+              <option value="+965">🇰🇼 +965</option>
+              <option value="+968">🇴🇲 +968</option>
+              <option value="+973">🇧🇭 +973</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+60">🇲🇾 +60</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+41">🇨🇭 +41</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+66">🇹🇭 +66</option>
+              <option value="+960">🇲🇻 +960</option>
+              <option value="+94">🇱🇰 +94</option>
+              <option value="+880">🇧🇩 +880</option>
+              <option value="+977">🇳🇵 +977</option>
+              <option value="other">🌍 Other</option>
+            </select>
+            <input type="tel" id="c-phone" placeholder="Enter your number">
           </div>
-          <div class="field-group">
-            <label>Email *</label>
-            <input type="email" id="c-email" placeholder="your@email.com">
-          </div>
+        </div>
+        <div class="field-group">
+          <label>Email *</label>
+          <input type="email" id="c-email" placeholder="your@email.com">
         </div>
         <div class="step-nav">
           <button class="btn-back" onclick="prevStep(3)">← Back</button>
@@ -459,17 +457,6 @@
 <script>
   var WEB3FORMS_KEY = 'dbaa90d6-e37a-4c74-bcab-20a80ed87a9d';
 
-  var DESTINATION_EMOJI = {
-    'Lakshadweep Tour Package': '🏝️',
-    'Maldives': '🌊',
-    'Dubai': '🕌',
-    'Kerala': '🌴',
-    'Singapore': '🌆',
-    'Thailand': '🐘',
-    'Europe': '🏛️',
-    'Other / Custom Trip': '✨'
-  };
-
   var state = {
     destination: '', date: '', travelers: '',
     name: '', phone: '', email: '', message: ''
@@ -484,6 +471,22 @@
   });
 
   // LIVE VALIDATION — enable/disable Next & Send buttons as user types
+  function validateStep2() {
+    var date = document.getElementById('c-date').value;
+    var travelers = document.getElementById('c-travelers').value;
+    var ok = date !== '' && travelers !== '' && parseInt(travelers) >= 1;
+    document.getElementById('step2-next-btn').disabled = !ok;
+  }
+
+  // Set minimum date to today (prevent past dates)
+  (function() {
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('c-date').setAttribute('min', yyyy + '-' + mm + '-' + dd);
+  })();
+
   function validateStep3() {
     var name = document.getElementById('c-name').value.trim();
     var countryCode = document.getElementById('c-country-code').value;
@@ -510,6 +513,9 @@
   });
   document.getElementById('c-country-code').addEventListener('change', validateStep3);
   document.getElementById('c-message').addEventListener('input', validateStep4);
+  document.getElementById('c-date').addEventListener('change', validateStep2);
+  document.getElementById('c-date').addEventListener('input', validateStep2);
+  document.getElementById('c-travelers').addEventListener('input', validateStep2);
 
   // Phone field: only allow digits, spaces, and dashes
   var phoneEl = document.getElementById('c-phone');
@@ -544,6 +550,15 @@
   function nextStep(current) {
     if (current === 1) {
       if (!state.destination) { alert('Please select a destination first.'); return; }
+    } else if (current === 2) {
+      var date = document.getElementById('c-date').value;
+      var travelers = document.getElementById('c-travelers').value;
+      var missing2 = [];
+      if (!date) { missing2.push('Travel Date'); document.getElementById('c-date').style.borderColor = '#e74c3c'; }
+      else document.getElementById('c-date').style.borderColor = '';
+      if (!travelers || parseInt(travelers) < 1) { missing2.push('Number of Travelers'); document.getElementById('c-travelers').style.borderColor = '#e74c3c'; }
+      else document.getElementById('c-travelers').style.borderColor = '';
+      if (missing2.length) { alert('⚠️ Please fill:\n• ' + missing2.join('\n• ')); return; }
     } else if (current === 3) {
       var name = document.getElementById('c-name').value.trim();
       var countryCode = document.getElementById('c-country-code').value;
@@ -591,102 +606,6 @@
 
   function prevStep(current) { setStep(current - 1); }
 
-  // Generate premium HTML email
-  function buildPremiumEmail() {
-    var destEmoji = DESTINATION_EMOJI[state.destination] || '📍';
-    var phoneDigits = state.phone.replace(/\D/g, '');
-    var waNumber = phoneDigits;
-    var now = new Date();
-    var dateStr = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
-    var timeStr = now.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
-    var travelDateFormatted = state.date ? new Date(state.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Not specified';
-
-    // Escape user input to prevent HTML injection in email
-    function esc(s) {
-      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>New Enquiry</title></head>'
-      + '<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">'
-      + '<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">'
-      + '<tr><td align="center">'
-      + '<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">'
-
-      // HEADER (Navy + Gold)
-      + '<tr><td style="background:linear-gradient(135deg,#0A1628 0%,#112240 100%);padding:35px 30px;text-align:center;border-bottom:3px solid #C9A84C;">'
-      + '<div style="font-family:Georgia,serif;font-size:28px;color:#C9A84C;letter-spacing:3px;font-weight:600;margin-bottom:6px;">ACOYA</div>'
-      + '<div style="font-size:11px;color:#B8C5D6;letter-spacing:4px;text-transform:uppercase;">Tours &amp; Travels</div>'
-      + '<div style="margin-top:18px;padding:8px 16px;background:rgba(201,168,76,0.15);border:1px solid #C9A84C;border-radius:30px;display:inline-block;color:#C9A84C;font-size:12px;font-weight:bold;letter-spacing:2px;">🌴 NEW ENQUIRY RECEIVED</div>'
-      + '</td></tr>'
-
-      // GREETING
-      + '<tr><td style="padding:30px 30px 15px;">'
-      + '<div style="font-family:Georgia,serif;font-size:22px;color:#0A1628;margin-bottom:8px;">A new traveler is interested!</div>'
-      + '<div style="font-size:14px;color:#666;line-height:1.6;">A new enquiry has been received through the ACOYA website. Please respond to the customer soon.</div>'
-      + '</td></tr>'
-
-      // CUSTOMER DETAILS
-      + '<tr><td style="padding:10px 30px;">'
-      + '<div style="background:#FAF7F0;border-left:4px solid #C9A84C;padding:20px;border-radius:4px;">'
-      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;">👤 CUSTOMER DETAILS</div>'
-      + '<table width="100%" cellpadding="6" cellspacing="0">'
-      + '<tr><td width="100" style="font-size:13px;color:#666;font-weight:600;">Name:</td><td style="font-size:15px;color:#0A1628;font-weight:600;">' + esc(state.name) + '</td></tr>'
-      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Phone:</td><td style="font-size:15px;color:#0A1628;"><a href="tel:' + esc(state.phone) + '" style="color:#0A1628;text-decoration:none;font-weight:600;">' + esc(state.phone) + '</a></td></tr>'
-      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Email:</td><td style="font-size:15px;color:#0A1628;"><a href="mailto:' + esc(state.email) + '" style="color:#0A1628;text-decoration:none;font-weight:600;">' + esc(state.email) + '</a></td></tr>'
-      + '</table>'
-      + '</div>'
-      + '</td></tr>'
-
-      // TRIP DETAILS
-      + '<tr><td style="padding:10px 30px;">'
-      + '<div style="background:#FAF7F0;border-left:4px solid #C9A84C;padding:20px;border-radius:4px;">'
-      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;">📍 TRIP DETAILS</div>'
-      + '<table width="100%" cellpadding="6" cellspacing="0">'
-      + '<tr><td width="100" style="font-size:13px;color:#666;font-weight:600;">Destination:</td><td style="font-size:16px;color:#0A1628;font-weight:600;">' + destEmoji + ' ' + esc(state.destination) + '</td></tr>'
-      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Travel Date:</td><td style="font-size:15px;color:#0A1628;">📅 ' + esc(travelDateFormatted) + '</td></tr>'
-      + '<tr><td style="font-size:13px;color:#666;font-weight:600;">Travelers:</td><td style="font-size:15px;color:#0A1628;">👥 ' + esc(state.travelers || 'Not specified') + '</td></tr>'
-      + '</table>'
-      + '</div>'
-      + '</td></tr>'
-
-      // MESSAGE
-      + '<tr><td style="padding:10px 30px;">'
-      + '<div style="background:#FAF7F0;border-left:4px solid #C9A84C;padding:20px;border-radius:4px;">'
-      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;">💬 CUSTOMER MESSAGE</div>'
-      + '<div style="font-size:14px;color:#0A1628;line-height:1.7;font-style:italic;background:#fff;padding:14px;border-radius:4px;border:1px solid #EDE5D5;">' + esc(state.message).replace(/\n/g, '<br>') + '</div>'
-      + '</div>'
-      + '</td></tr>'
-
-      // QUICK ACTIONS BUTTONS
-      + '<tr><td style="padding:25px 30px 10px;">'
-      + '<div style="font-size:11px;color:#9B7A2E;letter-spacing:2px;font-weight:bold;margin-bottom:14px;text-align:center;">⚡ QUICK ACTIONS</div>'
-      + '<table width="100%" cellpadding="0" cellspacing="0">'
-      + '<tr>'
-      + '<td width="33%" style="padding:0 4px;"><a href="tel:' + esc(state.phone) + '" style="display:block;background:#0A1628;color:#C9A84C;text-decoration:none;text-align:center;padding:14px 8px;border-radius:6px;font-weight:bold;font-size:13px;letter-spacing:1px;border:1px solid #C9A84C;">📞 CALL</a></td>'
-      + '<td width="33%" style="padding:0 4px;"><a href="https://wa.me/' + waNumber + '" style="display:block;background:#25D366;color:#ffffff;text-decoration:none;text-align:center;padding:14px 8px;border-radius:6px;font-weight:bold;font-size:13px;letter-spacing:1px;">💬 WHATSAPP</a></td>'
-      + '<td width="33%" style="padding:0 4px;"><a href="mailto:' + esc(state.email) + '?subject=Re%3A%20Your%20ACOYA%20Enquiry%20-%20' + encodeURIComponent(state.destination) + '" style="display:block;background:#C9A84C;color:#0A1628;text-decoration:none;text-align:center;padding:14px 8px;border-radius:6px;font-weight:bold;font-size:13px;letter-spacing:1px;">📧 REPLY</a></td>'
-      + '</tr>'
-      + '</table>'
-      + '</td></tr>'
-
-      // TIMESTAMP
-      + '<tr><td style="padding:25px 30px 10px;text-align:center;">'
-      + '<div style="font-size:12px;color:#999;">📅 Received on ' + dateStr + ' at ' + timeStr + '</div>'
-      + '</td></tr>'
-
-      // FOOTER
-      + '<tr><td style="background:#0A1628;padding:20px 30px;text-align:center;border-top:1px solid #C9A84C;">'
-      + '<div style="font-family:Georgia,serif;font-size:16px;color:#C9A84C;letter-spacing:2px;margin-bottom:6px;">ACOYA Tours &amp; Travels</div>'
-      + '<div style="font-size:11px;color:#B8C5D6;line-height:1.6;">Agatti Island, Lakshadweep · India<br>'
-      + '<a href="https://acoyatravels.com" style="color:#C9A84C;text-decoration:none;">acoyatravels.com</a></div>'
-      + '<div style="font-size:10px;color:#666;margin-top:14px;letter-spacing:1px;">This enquiry was submitted through the ACOYA website contact form.</div>'
-      + '</td></tr>'
-
-      + '</table>'
-      + '</td></tr></table>'
-      + '</body></html>';
-  }
-
   function submitForm() {
     var msg = document.getElementById('c-message').value.trim();
     var errorEl = document.getElementById('error-display');
@@ -710,17 +629,20 @@
     var formData = new FormData();
     formData.append('access_key', WEB3FORMS_KEY);
     formData.append('subject', '🌴 New Enquiry: ' + state.destination + ' — ' + state.name);
-    formData.append('from_name', 'ACOYA Website');
-    // Premium HTML body
-    formData.append('html', buildPremiumEmail());
-    // Plain-text fallback fields (visible in Web3Forms dashboard)
-    formData.append('Customer_Name', state.name);
-    formData.append('Phone', state.phone);
-    formData.append('Email', state.email);
-    formData.append('Destination', state.destination);
-    formData.append('Travel_Date', state.date || 'Not specified');
-    formData.append('Travelers', state.travelers || 'Not specified');
-    formData.append('Message', state.message);
+    formData.append('from_name', 'ACOYA Website Enquiry');
+    // Reply-to: customer's email so Amraz can hit "Reply" directly
+    formData.append('replyto', state.email);
+
+    // Web3Forms shows fields by label in default template.
+    // Use clear, ordered field names so the email looks structured.
+    formData.append('👤 Customer Name', state.name);
+    formData.append('📞 Phone Number', state.phone);
+    formData.append('📧 Email Address', state.email);
+    formData.append('📍 Destination', state.destination);
+    formData.append('📅 Travel Date', state.date || 'Not specified');
+    formData.append('👥 Number of Travelers', state.travelers || 'Not specified');
+    formData.append('💬 Message', state.message);
+    formData.append('🌐 Submitted via', 'acoyatravels.com');
 
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -756,6 +678,7 @@
     var btn = document.getElementById('submit-btn');
     btn.innerHTML = 'Send Message';
     // Re-disable buttons until inputs are filled again
+    document.getElementById('step2-next-btn').disabled = true;
     document.getElementById('step3-next-btn').disabled = true;
     btn.disabled = true;
     setStep(1);
